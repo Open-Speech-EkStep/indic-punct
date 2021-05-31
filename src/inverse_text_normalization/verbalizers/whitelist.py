@@ -1,4 +1,5 @@
 # Copyright (c) 2021, NVIDIA CORPORATION.  All rights reserved.
+# Copyright 2015 and onwards Google, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -11,22 +12,33 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from taggers.tokenize_and_classify import ClassifyFst
-from taggers.tokenize_and_classify_final import ClassifyFinalFst
-from verbalizers.verbalize import VerbalizeFst
-from verbalizers.verbalize_final import VerbalizeFinalFst
 
-from nemo.utils import logging
+
+from graph_utils import NEMO_CHAR, NEMO_SIGMA, GraphFst, delete_space
 
 try:
     import pynini
+    from pynini.lib import pynutil
 
     PYNINI_AVAILABLE = True
 except (ModuleNotFoundError, ImportError):
-    logging.warning(
-        "`pynini` is not installed ! \n"
-        "Please run the `nemo_text_processing/setup.sh` script"
-        "prior to usage of this toolkit."
-    )
-
     PYNINI_AVAILABLE = False
+
+
+class WhiteListFst(GraphFst):
+    """
+    Finite state transducer for verbalizing whitelist
+        e.g. tokens { tokens { name: "mrs." } } -> mrs.
+    """
+
+    def __init__(self):
+        super().__init__(name="whitelist", kind="verbalize")
+        graph = (
+            pynutil.delete("name:")
+            + delete_space
+            + pynutil.delete("\"")
+            + pynini.closure(NEMO_CHAR - " ", 1)
+            + pynutil.delete("\"")
+        )
+        graph = graph @ pynini.cdrewrite(pynini.cross(u"\u00A0", " "), "", "", NEMO_SIGMA)
+        self.fst = graph.optimize()

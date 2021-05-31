@@ -11,22 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from taggers.tokenize_and_classify import ClassifyFst
-from taggers.tokenize_and_classify_final import ClassifyFinalFst
-from verbalizers.verbalize import VerbalizeFst
-from verbalizers.verbalize_final import VerbalizeFinalFst
 
-from nemo.utils import logging
+from graph_utils import GraphFst
 
-try:
-    import pynini
 
-    PYNINI_AVAILABLE = True
-except (ModuleNotFoundError, ImportError):
-    logging.warning(
-        "`pynini` is not installed ! \n"
-        "Please run the `nemo_text_processing/setup.sh` script"
-        "prior to usage of this toolkit."
-    )
+class ElectronicFst(GraphFst):
+    """
+    Finite state transducer for classifying electronic
+    """
 
-    PYNINI_AVAILABLE = False
+    def __init__(self):
+        super().__init__(name="electronic", kind="classify")
+        # protocol, username, password, domain,port, path, query_string, fragment_id     protocol://username:password@domain:port/path?query_string#fragment_id
