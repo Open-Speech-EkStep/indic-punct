@@ -17,6 +17,11 @@ import sys
 from collections import OrderedDict
 from typing import List
 
+from inverse_text_normalization.lang_params import LANG
+lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
+
+exec(f"from {lang_taggers}.tokenize_and_classify_final import ClassifyFinalFst")
+
 from inverse_text_normalization.token_parser import PRESERVE_ORDER_KEY, TokenParser
 from inverse_text_normalization.verbalizers.verbalize_final import VerbalizeFinalFst
 from tqdm import tqdm
@@ -204,10 +209,6 @@ def inverse_normalize_nemo(texts: List[str], verbose=False) -> List[str]:
 
     Returns converted input strings
     """
-    from inverse_text_normalization.lang_params import LANG
-    lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
-
-    exec(f"from {lang_taggers}.tokenize_and_classify_final import ClassifyFinalFst")
     res = []
     for input in tqdm(texts):
         try:
