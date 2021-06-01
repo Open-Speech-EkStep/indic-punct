@@ -16,12 +16,12 @@ import itertools
 import sys
 from collections import OrderedDict
 from typing import List
-from lang_params import LANG
+from inverse_text_normalization.lang_params import LANG
 lang_taggers = f'taggers.{LANG}_taggers'
 
 exec(f"from {lang_taggers}.tokenize_and_classify_final import ClassifyFinalFst")
-from token_parser import PRESERVE_ORDER_KEY, TokenParser
-from verbalizers.verbalize_final import VerbalizeFinalFst
+from inverse_text_normalization.token_parser import PRESERVE_ORDER_KEY, TokenParser
+from inverse_text_normalization.verbalizers.verbalize_final import VerbalizeFinalFst
 from tqdm import tqdm
 
 try:
