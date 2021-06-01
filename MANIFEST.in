@@ -1,0 +1,2 @@
+include src/inverse_text_normalization/**/*.tsv
+include src/inverse_text_normalization/**/*.txt
