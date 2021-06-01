@@ -72,8 +72,8 @@ def remove_starting_zeros(word, hindi_digits_with_zero):
         word = word[1:]
 
     if word[0] in hindi_digits_with_zero and len(word) > 1:
-        if all([digit=="0" for digit in list(word)]):
-            return "1"+word
+        if all([digit == "0" for digit in list(word)]):
+            return "1" + word
         if '.' in word:
             if len(word.split('.')[0]) == 1:
                 return word
@@ -82,7 +82,7 @@ def remove_starting_zeros(word, hindi_digits_with_zero):
         first_non_zero_num = min(pos_non_zero_nums)
         word = word[first_non_zero_num:]
     if currency:
-        word = currency+' '+word
+        word = currency + ' ' + word
     return word
 
 
@@ -96,6 +96,22 @@ def indian_format(word, hindi_digits_with_zero):
         return word
     else:
         return word
+
+
+def get_final_predictions_on_list(text_list, verbose=False, ):
+    inverse_normalizer = INVERSE_NORMALIZERS['nemo']
+    hindi_digits_with_zero = '0123456789'
+    inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
+    astr_list = []
+    comma_sep_num_list = []
+    inverse_normalizer_prediction = [sent.replace('\r', '') for sent in inverse_normalizer_prediction]
+    for sent in inverse_normalizer_prediction:
+        trimmed_sent = ' '.join(
+            [remove_starting_zeros(word, hindi_digits_with_zero) for word in sent.split(' ')])
+        astr_list.append(trimmed_sent)
+        comma_sep_num_list.append(
+            ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
+    return comma_sep_num_list
 
 
 if __name__ == "__main__":
