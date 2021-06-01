@@ -15,7 +15,7 @@
 from argparse import ArgumentParser
 from typing import List
 
-from inverse_normalize import INVERSE_NORMALIZERS
+from inverse_text_normalization.inverse_normalize import INVERSE_NORMALIZERS
 
 '''
 Runs denormalization prediction on text data
