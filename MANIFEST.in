@@ -1,2 +1,4 @@
-include src/inverse_text_normalization/**/*.tsv
-include src/inverse_text_normalization/**/*.txt
+include src/inverse_text_normalization/data/hi_data/*.tsv
+include src/inverse_text_normalization/data/hi_data/*.txt
+include src/inverse_text_normalization/data/hi_data/numbers/*.tsv
+include src/inverse_text_normalization/data/hi_data/ordinals/*.tsv
