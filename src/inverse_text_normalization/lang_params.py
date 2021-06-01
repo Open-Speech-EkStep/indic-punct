@@ -1,1 +1,1 @@
-LANG = 'hi'
+LANG = ''

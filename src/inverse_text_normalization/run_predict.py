@@ -98,7 +98,9 @@ def indian_format(word, hindi_digits_with_zero):
         return word
 
 
-def get_final_predictions_on_list(text_list, verbose=False, ):
+def get_final_predictions_on_list(text_list, lang, verbose=False):
+    import inverse_text_normalization.lang_params
+    lang_params.LANG = lang
     inverse_normalizer = INVERSE_NORMALIZERS['nemo']
     hindi_digits_with_zero = '0123456789'
     inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
