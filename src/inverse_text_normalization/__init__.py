@@ -18,20 +18,21 @@
 # from verbalizers.verbalize_final import VerbalizeFinalFst
 
 # from nemo.utils import logging
-import warnings
 
-try:
-    import pynini
-
-    PYNINI_AVAILABLE = True
-except (ModuleNotFoundError, ImportError):
-    # logging.warning(
-    #     "`pynini` is not installed ! \n"
-    #     "Please run the `nemo_text_processing/setup.sh` script"
-    #     "prior to usage of this toolkit."
-    # )
-    warnings.warn("`pynini` is not installed ! \n"
-                  "Please run the `nemo_text_processing/setup.sh` script"
-                  "prior to usage of this toolkit.")
-
-    PYNINI_AVAILABLE = False
+# import warnings
+#
+# try:
+#     import pynini
+# 
+#     PYNINI_AVAILABLE = True
+# except (ModuleNotFoundError, ImportError):
+#     # logging.warning(
+#     #     "`pynini` is not installed ! \n"
+#     #     "Please run the `nemo_text_processing/setup.sh` script"
+#     #     "prior to usage of this toolkit."
+#     # )
+#     warnings.warn("`pynini` is not installed ! \n"
+#                   "Please run the `nemo_text_processing/setup.sh` script"
+#                   "prior to usage of this toolkit.")
+#
+#     PYNINI_AVAILABLE = False
