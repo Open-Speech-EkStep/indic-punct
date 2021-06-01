@@ -16,15 +16,15 @@
 import pynini
 from pynini.lib import pynutil, utf8
 
-from data_loader_utils import get_abs_path
-from graph_utils import (
+from inverse_text_normalization.data_loader_utils import get_abs_path
+from inverse_text_normalization.graph_utils import (
     NEMO_DIGIT,
     NEMO_SIGMA,
     NEMO_SPACE,
     GraphFst,
     delete_space,
 )
-from utils import num_to_word
+from inverse_text_normalization.utils import num_to_word
 
 try:
     import pynini
@@ -34,8 +34,8 @@ try:
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
-from lang_params import LANG
-data_path = f'data/{LANG}_data/'
+from inverse_text_normalization.lang_params import LANG
+data_path = f'inverse_text_normalization/data/{LANG}_data/'
 
 class CardinalFst(GraphFst):
     """
