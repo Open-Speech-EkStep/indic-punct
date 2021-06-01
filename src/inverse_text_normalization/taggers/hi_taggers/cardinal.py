@@ -35,7 +35,7 @@ except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
 from inverse_text_normalization.lang_params import LANG
-data_path = f'inverse_text_normalization/data/{LANG}_data/'
+data_path = f'data/{LANG}_data/'
 
 class CardinalFst(GraphFst):
     """
