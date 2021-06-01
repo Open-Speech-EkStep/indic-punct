@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from data_loader_utils import get_abs_path
-from graph_utils import (
+from inverse_text_normalization.data_loader_utils import get_abs_path
+from inverse_text_normalization.graph_utils import (
     NEMO_DIGIT,
     GraphFst,
     delete_extra_space,
@@ -28,8 +28,8 @@ try:
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
-from lang_params import LANG
-data_path = f'data/{LANG}_data/'
+from inverse_text_normalization.lang_params import LANG
+data_path = f'inverse_text_normalization/data/{LANG}_data/'
 
 def get_quantity(deci, cardinal_graph_hundred_component_at_least_one_none_zero_digit):
     numbers = cardinal_graph_hundred_component_at_least_one_none_zero_digit @ (

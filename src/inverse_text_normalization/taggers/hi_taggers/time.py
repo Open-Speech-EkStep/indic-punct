@@ -13,20 +13,20 @@
 # limitations under the License.
 
 
-from data_loader_utils import get_abs_path
-from graph_utils import (
+from inverse_text_normalization.data_loader_utils import get_abs_path
+from inverse_text_normalization.graph_utils import (
     GraphFst,
     convert_space,
     delete_extra_space,
     delete_space,
     insert_space,
 )
-from lang_params import LANG
+from inverse_text_normalization.lang_params import LANG
 
-lang_taggers = f'taggers.{LANG}_taggers'
+lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
 exec(f"from {lang_taggers}.cardinal import CardinalFst")
 # from taggers.cardinal import CardinalFst
-from utils import num_to_word
+from inverse_text_normalization.utils import num_to_word
 
 try:
     import pynini
@@ -36,8 +36,8 @@ try:
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
-from lang_params import LANG
-lang_data_path = f'data/{LANG}_data/'
+from inverse_text_normalization.lang_params import LANG
+lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
 
 class TimeFst(GraphFst):
     """
