@@ -1,7 +1,7 @@
 import pynini
 from pynini.lib import pynutil, utf8
 
-from graph_utils import delete_space
+from inverse_text_normalization.graph_utils import delete_space
 
 
 def remove_starting_zeros(word, hindi_digits_with_zero):

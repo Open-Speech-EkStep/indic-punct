@@ -14,15 +14,15 @@
 
 from argparse import ArgumentParser
 
-from clean_eval_data import filter_loaded_data
-from data_loader_utils import (
+from inverse_text_normalization.clean_eval_data import filter_loaded_data
+from inverse_text_normalization.data_loader_utils import (
     evaluate,
     known_types,
     load_files,
     training_data_to_sentences,
     training_data_to_tokens,
 )
-from inverse_normalize import INVERSE_NORMALIZERS
+from inverse_text_normalization.inverse_normalize import INVERSE_NORMALIZERS
 
 
 '''

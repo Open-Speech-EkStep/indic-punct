@@ -16,11 +16,11 @@
 import os
 import string
 from pathlib import Path
-from lang_params import LANG
-lang_data_path = f'data/{LANG}_data/'
+from inverse_text_normalization.lang_params import LANG
+lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
 try:
     import pynini
-    from data_loader_utils import get_abs_path
+    from inverse_text_normalization.data_loader_utils import get_abs_path
     from pynini import Far
     from pynini.examples import plurals
     from pynini.lib import byte, pynutil, utf8
