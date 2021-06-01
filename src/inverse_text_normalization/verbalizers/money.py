@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from graph_utils import NEMO_CHAR, GraphFst, delete_space
-from verbalizers.decimal import DecimalFst
+from inverse_text_normalization.graph_utils import NEMO_CHAR, GraphFst, delete_space
+from inverse_text_normalization.verbalizers.decimal import DecimalFst
 
 try:
     import pynini

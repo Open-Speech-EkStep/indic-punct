@@ -20,7 +20,7 @@
 # from nemo.utils import logging
 
 # import warnings
-#
+# 
 # try:
 #     import pynini
 # 
@@ -34,5 +34,5 @@
 #     warnings.warn("`pynini` is not installed ! \n"
 #                   "Please run the `nemo_text_processing/setup.sh` script"
 #                   "prior to usage of this toolkit.")
-#
+# 
 #     PYNINI_AVAILABLE = False

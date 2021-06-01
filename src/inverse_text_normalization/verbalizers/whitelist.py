@@ -14,7 +14,7 @@
 # limitations under the License.
 
 
-from graph_utils import NEMO_CHAR, NEMO_SIGMA, GraphFst, delete_space
+from inverse_text_normalization.graph_utils import NEMO_CHAR, NEMO_SIGMA, GraphFst, delete_space
 
 try:
     import pynini
