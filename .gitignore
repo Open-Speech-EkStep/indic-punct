@@ -13,6 +13,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+model_data
 .idea/
 build/
 develop-eggs/
