@@ -15,16 +15,19 @@ class Punctuation:
         self.model_path = 'model_data/' + self.language_code + '.pt'
         self.encoder_path = 'model_data/' + self.language_code + '.json'
         self.dict_map = 'model_data/' + self.language_code + '_dict.json'
-        #self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        self.device = 'cpu'
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
+
 
     def bar_thermometer(self, current, total, width=80):
         progress_message = "Downloading: %d%% [%d / %d] bytes" % (current / total * 100, current, total)
-        # Don't use print() as it will print in new line every time.
         sys.stdout.write("\r" + progress_message)
         sys.stdout.flush()
 
     def download_model_data(self):
+
+        if not os.path.exists('model_data'):
+            os.makedirs('model_data', exist_ok=True)
+
         if not os.path.exists(self.model_path):
             wget.download(
                 'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.pt',
@@ -73,17 +76,12 @@ class Punctuation:
 
     def punctuate_text(self, text):
         tokens, label_indices = self.get_tokens_and_labels_indices_from_text(text)
-        print('Tokens')
-        print(tokens)
-        print('label indices')
-        print(label_indices)
-
         with open(self.encoder_path) as label_encoder:
             train_encoder = json.load(label_encoder)
 
-        #with open(self.dict_map) as dict_map:
-        #    punctuation_dict = json.load(dict_map)
-        punctuation_dict = {'hyp': '-', 'qm': '? ', 'comma': ', ', 'end': '। ', 'blank': ' ', 'ex': '! '}
+        with open(self.dict_map) as dict_map:
+            punctuation_dict = json.load(dict_map)
+
         new_tokens = []
         new_labels = []
         for i in range(1, len(tokens) - 1):
@@ -97,10 +95,6 @@ class Punctuation:
                         break
                 new_tokens.append(current_word)
         full_text = ''
-        print('mew tokens')
-        print(new_tokens)
-        print('new labels')
-        print(new_labels)
         tokenized_text = indic_tokenize.trivial_tokenize_indic(text)
 
         if len(tokenized_text) == len(new_labels):
@@ -114,4 +108,4 @@ class Punctuation:
 
 
 if __name__ == "__main__":
-    print(Punctuation('hi').punctuate_text("िकिपीडिया सभी विषयों पर प्रामाणिक और उपयोग परिवर्तन व पुनर्वितरण के लिए स्वतन्त्र ज्ञानकोश बनाने का एक बहुभाषीय प्रकल्प है"))
+    print(Punctuation('hi').punctuate_text('नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था मेहुल को भारत को सौंप दिया जाए'))

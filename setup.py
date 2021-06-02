@@ -24,6 +24,12 @@ setup(
         'pytz==2021.1',
         'six==1.15.0',
         'tqdm==4.60.0'
+        'torch==1.5.1',
+        'scipy==1.5.4',
+        'sentencepiece==0.1.94',
+        'tokenizers==0.9.4',
+        'torchvision==0.6.1'
+        'transformers==4.0.1'
     ],
     classifiers=[
         # How mature is this project? Common values are
