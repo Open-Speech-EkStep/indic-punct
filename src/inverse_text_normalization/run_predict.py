@@ -16,7 +16,7 @@ from argparse import ArgumentParser
 from typing import List
 
 from inverse_text_normalization.inverse_normalize import INVERSE_NORMALIZERS
-from nemo_text_processing.inverse_text_normalization.inverse_normalize import inverse_normalize as en_inverse_normalize
+from nemo_text_processing.inverse_text_normalization.inverse_normalize import InverseNormalizer
 
 '''
 Runs denormalization prediction on text data
@@ -101,11 +101,10 @@ def indian_format(word, hindi_digits_with_zero):
 
 def run_itn(text_list, lang, verbose=False):
     lang = lang
-    comma_sep_num_list = []
     if lang == 'en':
-        for sent in text_list:
-            sent_updated = en_inverse_normalize(sent, verbose=False)
-            comma_sep_num_list.append(sent_updated)
+
+        sent_updated = InverseNormalizer.normalize_list(text_list)
+        return sent_updated
 
     else:
         inverse_normalizer = INVERSE_NORMALIZERS['nemo']
@@ -121,7 +120,7 @@ def run_itn(text_list, lang, verbose=False):
             comma_sep_num_list.append(
                 ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
 
-    return comma_sep_num_list
+        return comma_sep_num_list
 
 
 if __name__ == "__main__":
