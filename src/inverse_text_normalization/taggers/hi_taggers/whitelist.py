@@ -23,8 +23,9 @@ try:
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
-from inverse_text_normalization.lang_params import LANG
-lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+# from inverse_text_normalization.lang_params import LANG
+# lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+lang_data_path = 'inverse_text_normalization/data/hi_data/'
 
 class WhiteListFst(GraphFst):
     """

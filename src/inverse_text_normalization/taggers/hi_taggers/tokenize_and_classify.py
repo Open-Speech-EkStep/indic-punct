@@ -11,9 +11,11 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-from inverse_text_normalization.lang_params import LANG
 
-lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
+# from inverse_text_normalization.lang_params import LANG
+
+# lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
+lang_taggers = 'inverse_text_normalization.taggers.hi_taggers'
 
 from inverse_text_normalization.graph_utils import GraphFst
 exec(f"from {lang_taggers}.cardinal import CardinalFst")

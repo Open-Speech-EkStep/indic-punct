@@ -16,7 +16,7 @@ from argparse import ArgumentParser
 from typing import List
 
 import regex as re
-from data_loader_utils import (
+from inverse_text_normalization.data_loader_utils import (
     EOS_TYPE,
     Instance,
     load_files,

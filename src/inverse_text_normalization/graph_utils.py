@@ -16,8 +16,10 @@
 import os
 import string
 from pathlib import Path
-from inverse_text_normalization.lang_params import LANG
-lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+# from inverse_text_normalization.lang_params import LANG
+# lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+lang_data_path = 'inverse_text_normalization/data/hi_data/'
+
 try:
     import pynini
     from inverse_text_normalization.data_loader_utils import get_abs_path

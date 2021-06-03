@@ -15,8 +15,9 @@
 from inverse_text_normalization.data_loader_utils import get_abs_path
 from inverse_text_normalization.graph_utils import NEMO_NOT_SPACE, GraphFst, convert_space
 
-from inverse_text_normalization.lang_params import LANG
-lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+# from inverse_text_normalization.lang_params import LANG
+# lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+lang_data_path = f'inverse_text_normalization/data/hi_data/'
 
 try:
     import pynini

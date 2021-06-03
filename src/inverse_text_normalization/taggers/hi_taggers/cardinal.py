@@ -25,6 +25,9 @@ from inverse_text_normalization.graph_utils import (
     delete_space,
 )
 from inverse_text_normalization.utils import num_to_word
+# from inverse_text_normalization.lang_params import LANG
+# data_path = f'data/{LANG}_data/'
+data_path = 'data/hi_data/'
 
 try:
     import pynini
@@ -33,9 +36,6 @@ try:
     PYNINI_AVAILABLE = True
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
-
-from inverse_text_normalization.lang_params import LANG
-data_path = f'data/{LANG}_data/'
 
 class CardinalFst(GraphFst):
     """

@@ -21,9 +21,13 @@ from inverse_text_normalization.graph_utils import (
     delete_space,
     insert_space,
 )
-from inverse_text_normalization.lang_params import LANG
+# from inverse_text_normalization.lang_params import LANG
+#
+# lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
+# lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
 
-lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
+lang_data_path = 'inverse_text_normalization/data/hi_data/'
+lang_taggers = 'inverse_text_normalization.taggers.hi_taggers'
 exec(f"from {lang_taggers}.cardinal import CardinalFst")
 # from taggers.cardinal import CardinalFst
 from inverse_text_normalization.utils import num_to_word
@@ -36,8 +40,7 @@ try:
 except (ModuleNotFoundError, ImportError):
     PYNINI_AVAILABLE = False
 
-from inverse_text_normalization.lang_params import LANG
-lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
+
 
 class TimeFst(GraphFst):
     """
