@@ -29,7 +29,8 @@ setup(
         'sentencepiece==0.1.94',
         'tokenizers==0.9.4',
         'torchvision==0.6.1',
-        'transformers==4.0.1'
+        'transformers==4.0.1',
+        'indic-nlp-library==0.81'
     ],
     classifiers=[
         # How mature is this project? Common values are
