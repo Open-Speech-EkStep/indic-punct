@@ -98,8 +98,8 @@ def indian_format(word, hindi_digits_with_zero):
         return word
 
 
-def run_itn(text_list, verbose=False):
-
+def run_itn(text_list, lang, verbose=False):
+    lang = lang
     inverse_normalizer = INVERSE_NORMALIZERS['nemo']
     hindi_digits_with_zero = '0123456789'
     inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
