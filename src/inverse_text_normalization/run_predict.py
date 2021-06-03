@@ -16,6 +16,7 @@ from argparse import ArgumentParser
 from typing import List
 
 from inverse_text_normalization.inverse_normalize import INVERSE_NORMALIZERS
+from nemo_text_processing.inverse_text_normalization.inverse_normalize import inverse_normalize as en_inverse_normalize
 
 '''
 Runs denormalization prediction on text data
@@ -100,18 +101,26 @@ def indian_format(word, hindi_digits_with_zero):
 
 def run_itn(text_list, lang, verbose=False):
     lang = lang
-    inverse_normalizer = INVERSE_NORMALIZERS['nemo']
-    hindi_digits_with_zero = '0123456789'
-    inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
-    astr_list = []
     comma_sep_num_list = []
-    inverse_normalizer_prediction = [sent.replace('\r', '') for sent in inverse_normalizer_prediction]
-    for sent in inverse_normalizer_prediction:
-        trimmed_sent = ' '.join(
-            [remove_starting_zeros(word, hindi_digits_with_zero) for word in sent.split(' ')])
-        astr_list.append(trimmed_sent)
-        comma_sep_num_list.append(
-            ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
+    if lang == 'en':
+        for sent in text_list:
+            sent_updated = en_inverse_normalize(sent, verbose=False)
+            comma_sep_num_list.append(sent_updated)
+
+    else:
+        inverse_normalizer = INVERSE_NORMALIZERS['nemo']
+        hindi_digits_with_zero = '0123456789'
+        inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
+        astr_list = []
+        comma_sep_num_list = []
+        inverse_normalizer_prediction = [sent.replace('\r', '') for sent in inverse_normalizer_prediction]
+        for sent in inverse_normalizer_prediction:
+            trimmed_sent = ' '.join(
+                [remove_starting_zeros(word, hindi_digits_with_zero) for word in sent.split(' ')])
+            astr_list.append(trimmed_sent)
+            comma_sep_num_list.append(
+                ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
+
     return comma_sep_num_list
 
 
