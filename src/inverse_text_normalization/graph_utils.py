@@ -50,7 +50,7 @@ try:
     insert_space = pynutil.insert(" ")
     delete_extra_space = pynini.cross(pynini.closure(NEMO_WHITE_SPACE, 1), " ")
 
-    suppletive = pynini.string_file("./inverse_text_normalization/data/hi_data/suppletive.tsv")
+    suppletive = pynini.string_file("../../data/hi_data/suppletive.tsv")
     # _v = pynini.union("a", "e", "i", "o", "u")
     _c = pynini.union(
         "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"
