@@ -18,7 +18,7 @@ import string
 from pathlib import Path
 # from inverse_text_normalization.lang_params import LANG
 # lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
-lang_data_path = './data/hi_data/'
+data_path = 'data/hi_data/'
 
 try:
     import pynini
@@ -50,7 +50,7 @@ try:
     insert_space = pynutil.insert(" ")
     delete_extra_space = pynini.cross(pynini.closure(NEMO_WHITE_SPACE, 1), " ")
 
-    suppletive = pynini.string_file("../../data/hi_data/suppletive.tsv")
+    suppletive = pynini.string_file(get_abs_path(data_path + 'suppletive.tsv'))
     # _v = pynini.union("a", "e", "i", "o", "u")
     _c = pynini.union(
         "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"
