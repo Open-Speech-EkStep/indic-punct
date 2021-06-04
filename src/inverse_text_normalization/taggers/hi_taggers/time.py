@@ -26,7 +26,7 @@ from inverse_text_normalization.graph_utils import (
 # lang_taggers = f'inverse_text_normalization.taggers.{LANG}_taggers'
 # lang_data_path = f'inverse_text_normalization/data/{LANG}_data/'
 
-lang_data_path = 'inverse_text_normalization/data/hi_data/'
+lang_data_path = 'data/hi_data/'
 lang_taggers = 'inverse_text_normalization.taggers.hi_taggers'
 exec(f"from {lang_taggers}.cardinal import CardinalFst")
 # from taggers.cardinal import CardinalFst

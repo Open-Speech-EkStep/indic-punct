@@ -30,7 +30,7 @@ except (ModuleNotFoundError, ImportError):
 
 # from inverse_text_normalization.lang_params import LANG
 # data_path = f'inverse_text_normalization/data/{LANG}_data/'
-data_path = 'inverse_text_normalization/data/hi_data/'
+data_path = 'data/hi_data/'
 
 def get_quantity(deci, cardinal_graph_hundred_component_at_least_one_none_zero_digit):
     numbers = cardinal_graph_hundred_component_at_least_one_none_zero_digit @ (

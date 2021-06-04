@@ -17,7 +17,7 @@ from inverse_text_normalization.graph_utils import NEMO_CHAR, GraphFst
 
 # from inverse_text_normalization.lang_params import LANG
 # data_path = f'inverse_text_normalization/data/{LANG}_data/'
-data_path = 'inverse_text_normalization/data/hi_data/'
+data_path = 'data/hi_data/'
 
 try:
     import pynini
