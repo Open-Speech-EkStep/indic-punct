@@ -15,6 +15,7 @@ class Punctuation:
         self.language_code = language_code
         if self.language_code == 'en':
             self.model = PunctuationCapitalizationModel.from_pretrained("punctuation_en_bert")
+            self.device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
             self.model_path = 'model_data/' + self.language_code + '.pt'
             self.encoder_path = 'model_data/' + self.language_code + '.json'
@@ -118,16 +119,18 @@ class Punctuation:
         return punctuated_sentences
 
     def punctuate_text_english(self, text):
+        self.model = self.model.to(self.device)
         return self.model.add_punctuation_capitalization(text)
 
     def punctuate_text(self, text):
         if self.language_code == 'en':
-            self.punctuate_text_english(text)
+            return self.punctuate_text_english(text)
         elif self.language_code == 'hi':
-            self.punctuate_text_hindi(text)
+            return self.punctuate_text_hindi(text)
+
 
 if __name__ == "__main__":
     print(Punctuation('hi').punctuate_text_hindi(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था', ' मेहुल को भारत को सौंप दिया जाए']))
     print(Punctuation('en').punctuate_text_english(['how are you', 'great how about you']))
     print(Punctuation('en').punctuate_text(['how are you', 'great how about you']))
-    print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था']))
+    #print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था']))
