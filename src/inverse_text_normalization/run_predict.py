@@ -99,7 +99,7 @@ def indian_format(word, hindi_digits_with_zero):
         return word
 
 
-def inverse_normliaze_text(text_list, lang, verbose=False):
+def inverse_normalize_text(text_list, lang, verbose=False):
     lang = lang
     if lang == 'en':
 
