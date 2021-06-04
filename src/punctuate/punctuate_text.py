@@ -120,8 +120,8 @@ class Punctuation:
     def punctuate_text_english(self, text):
         return self.model.add_punctuation_capitalization(text)
 
-    def punctuate_text(self, text, lang):
-        if lang == 'en':
+    def punctuate_text(self, text):
+        if self.language_code == 'en':
             self.punctuate_text_english(text)
         else:
             self.punctuate_text_hindi(text)
@@ -129,5 +129,5 @@ class Punctuation:
 if __name__ == "__main__":
     print(Punctuation('hi').punctuate_text_hindi(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था', ' मेहुल को भारत को सौंप दिया जाए']))
     print(Punctuation('en').punctuate_text_english(['how are you', 'great how about you']))
-    print(Punctuation('en').punctuate_text(['how are you', 'great how about you'], 'en'))
-    print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था'], 'hi'))
+    print(Punctuation('en').punctuate_text(['how are you', 'great how about you']))
+    print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था']))
