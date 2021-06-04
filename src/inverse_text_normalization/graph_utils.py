@@ -50,7 +50,7 @@ try:
     insert_space = pynutil.insert(" ")
     delete_extra_space = pynini.cross(pynini.closure(NEMO_WHITE_SPACE, 1), " ")
 
-    suppletive = pynini.string_file("data/hi_data/suppletive.tsv")
+    # suppletive = pynini.string_file("inverse_text_normalization/data/hi_data/suppletive.tsv")
     # _v = pynini.union("a", "e", "i", "o", "u")
     _c = pynini.union(
         "b", "c", "d", "f", "g", "h", "j", "k", "l", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "y", "z"
@@ -59,8 +59,12 @@ try:
     _es = NEMO_SIGMA + pynini.union("s", "sh", "ch", "x", "z") + pynutil.insert("es")
     _s = NEMO_SIGMA + pynutil.insert("s")
 
+    # graph_plural = plurals._priority_union(
+    #     suppletive, plurals._priority_union(_ies, plurals._priority_union(_es, _s, NEMO_SIGMA), NEMO_SIGMA), NEMO_SIGMA
+    # ).optimize()
+
     graph_plural = plurals._priority_union(
-        suppletive, plurals._priority_union(_ies, plurals._priority_union(_es, _s, NEMO_SIGMA), NEMO_SIGMA), NEMO_SIGMA
+        plurals._priority_union(_ies, plurals._priority_union(_es, _s, NEMO_SIGMA), NEMO_SIGMA), NEMO_SIGMA
     ).optimize()
 
     SINGULAR_TO_PLURAL = graph_plural
