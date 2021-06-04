@@ -99,11 +99,11 @@ def indian_format(word, hindi_digits_with_zero):
         return word
 
 
-def run_itn(text_list, lang, verbose=False):
+def inverse_normliaze_text(text_list, lang, verbose=False):
     lang = lang
     if lang == 'en':
 
-        sent_updated = InverseNormalizer.normalize_list(text_list)
+        sent_updated = InverseNormalizer().normalize_list(text_list)
         return sent_updated
 
     else:
