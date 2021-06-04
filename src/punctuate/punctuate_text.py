@@ -133,4 +133,3 @@ if __name__ == "__main__":
     print(Punctuation('hi').punctuate_text_hindi(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था', ' मेहुल को भारत को सौंप दिया जाए']))
     print(Punctuation('en').punctuate_text_english(['how are you', 'great how about you']))
     print(Punctuation('en').punctuate_text(['how are you', 'great how about you']))
-    #print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था']))
