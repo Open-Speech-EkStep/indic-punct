@@ -123,7 +123,7 @@ class Punctuation:
     def punctuate_text(self, text):
         if self.language_code == 'en':
             self.punctuate_text_english(text)
-        else:
+        elif self.language_code == 'hi':
             self.punctuate_text_hindi(text)
 
 if __name__ == "__main__":
