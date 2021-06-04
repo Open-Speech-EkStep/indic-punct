@@ -15,6 +15,7 @@ pip install -e .
 ```buildoutcfg
 git clone https://github.com/Open-Speech-EkStep/indic-punct.git
 cd indic-punct
+bash install.sh
 pip install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 ```
 
