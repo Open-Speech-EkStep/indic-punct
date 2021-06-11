@@ -28,8 +28,8 @@ We are planning to add other Indic languages.
 from punctuate.punctuate_text import Punctuation
 hindi = Punctuation('hi') #loads model in memory
 english = Punctuation('en')
-hindi.punctuate_text(["इस श्रेणी में केवल निम्नलिखित उपश्रेणी है", "मेहुल को भारत को सौंप दिया जाए"]
-english.punctuate_text(['how are you', 'great how about you']
+hindi.punctuate_text(["इस श्रेणी में केवल निम्नलिखित उपश्रेणी है", "मेहुल को भारत को सौंप दिया जाए"])
+english.punctuate_text(['how are you', 'great how about you'])
 ['इस श्रेणी में केवल निम्नलिखित उपश्रेणी है। ', 'मेहुल को भारत को सौंप दिया जाए। ']
 ['How are you?', 'Great, how about you?']
 ```
