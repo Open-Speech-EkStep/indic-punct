@@ -24,7 +24,7 @@ from inverse_text_normalization.hi.graph_utils import (
     GraphFst,
     delete_space,
 )
-from src.inverse_text_normalization.hi.utils import num_to_word
+from inverse_text_normalization.hi.utils import num_to_word
 # from inverse_text_normalization.lang_params import LANG
 # data_path = f'data/{LANG}_data/'
 data_path = 'data/'
