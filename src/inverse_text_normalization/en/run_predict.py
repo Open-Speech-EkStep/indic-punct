@@ -53,6 +53,49 @@ def write_file(file_path: str, data: List[str]):
             fp.write(line + '\n')
 
 
+def indian_format(word, digits='0123456789'):
+    if word[0] in digits or (len(word) > 1 and word[1] in digits):  # word[1] is handling cases like $9000936.59
+        currency_sign = ''
+        if word[0] not in digits:
+            currency_sign = word[0]
+            word = word[1:]
+
+        s, *d = str(word).partition(".")
+        # getting [num_before_decimal_point, decimal_point, num_after_decimal_point]
+        r = ",".join([s[x - 2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
+        # adding commas after every 2 digits after the last 3 digits
+        word = "".join([r] + d)  # joining decimal points as is
+
+        if currency_sign:
+            word = currency_sign + word
+        return word
+    else:
+        return word
+
+
+def indian_format_2(word, digits='0123456789'):
+    word_contains_digit = any(map(str.isdigit, word))
+    currency_sign = ''
+    if word_contains_digit:
+        pos_of_first_digit_in_word = list(map(str.isdigit, word)).index(True)
+
+        if pos_of_first_digit_in_word != 0:  # word can be like $90,00,936.59
+            currency_sign = word[:pos_of_first_digit_in_word]
+            word = word[pos_of_first_digit_in_word:]
+
+        s, *d = str(word).partition(".")
+        # getting [num_before_decimal_point, decimal_point, num_after_decimal_point]
+        r = ",".join([s[x - 2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
+        # adding commas after every 2 digits after the last 3 digits
+        word = "".join([r] + d)  # joining decimal points as is
+
+        if currency_sign:
+            word = currency_sign + word
+        return word
+    else:
+        return word
+
+
 def parse_args():
     parser = ArgumentParser()
     parser.add_argument("--input", help="input file path", required=True, type=str)
@@ -65,7 +108,11 @@ def parse_args():
 def inverse_normalize_text(text_list, verbose=False):
     inverse_normalizer = INVERSE_NORMALIZERS['nemo']
     inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
-    return inverse_normalizer_prediction
+    comma_sep_num_list = []
+    for sent in inverse_normalizer_prediction:
+        comma_sep_num_list.append(
+            ' '.join([indian_format(word) for word in sent.split(' ')]))
+    return comma_sep_num_list
 
 
 if __name__ == "__main__":
