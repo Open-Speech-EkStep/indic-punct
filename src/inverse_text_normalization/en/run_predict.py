@@ -88,11 +88,11 @@ def parse_args():
 def inverse_normalize_text(text_list, verbose=False):
     inverse_normalizer = INVERSE_NORMALIZERS['nemo']
     inverse_normalizer_prediction = inverse_normalizer(text_list, verbose=verbose)
-    comma_sep_num_list = []
-    for sent in inverse_normalizer_prediction:
-        comma_sep_num_list.append(
-            ' '.join([indian_format(word) for word in sent.split(' ')]))
-    return comma_sep_num_list
+    # comma_sep_num_list = []
+    # for sent in inverse_normalizer_prediction:
+    #     comma_sep_num_list.append(
+    #         ' '.join([indian_format(word) for word in sent.split(' ')]))
+    return inverse_normalizer_prediction
 
 
 if __name__ == "__main__":
