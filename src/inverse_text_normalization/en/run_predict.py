@@ -54,26 +54,6 @@ def write_file(file_path: str, data: List[str]):
 
 
 def indian_format(word, digits='0123456789'):
-    if word[0] in digits or (len(word) > 1 and word[1] in digits):  # word[1] is handling cases like $9000936.59
-        currency_sign = ''
-        if word[0] not in digits:
-            currency_sign = word[0]
-            word = word[1:]
-
-        s, *d = str(word).partition(".")
-        # getting [num_before_decimal_point, decimal_point, num_after_decimal_point]
-        r = ",".join([s[x - 2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
-        # adding commas after every 2 digits after the last 3 digits
-        word = "".join([r] + d)  # joining decimal points as is
-
-        if currency_sign:
-            word = currency_sign + word
-        return word
-    else:
-        return word
-
-
-def indian_format_2(word, digits='0123456789'):
     word_contains_digit = any(map(str.isdigit, word))
     currency_sign = ''
     if word_contains_digit:
