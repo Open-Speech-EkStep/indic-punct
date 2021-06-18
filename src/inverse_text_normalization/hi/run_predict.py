@@ -117,10 +117,10 @@ def inverse_normalize_text(text_list, verbose=False):
         trimmed_sent = ' '.join(
             [remove_starting_zeros(word, hindi_digits_with_zero) for word in sent.split(' ')])
         astr_list.append(trimmed_sent)
-        comma_sep_num_list.append(
-            ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
+        # comma_sep_num_list.append(
+        #     ' '.join([indian_format(word, hindi_digits_with_zero) for word in trimmed_sent.split(' ')]))
 
-    return comma_sep_num_list
+    return astr_list
 
 
 if __name__ == "__main__":

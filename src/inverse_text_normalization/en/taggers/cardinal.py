@@ -58,9 +58,18 @@ class CardinalFst(GraphFst):
             (graph_ties | pynutil.insert("0")) + delete_space + (graph_digit | pynutil.insert("0")),
         )
 
-        graph_hundred_component_at_least_one_none_zero_digit = graph_hundred_component @ (
-            pynini.closure(NEMO_DIGIT) + (NEMO_DIGIT - "0") + pynini.closure(NEMO_DIGIT)
+        graph_hundred_component_in = pynini.union(graph_digit + delete_space + graph_hundred, pynutil.insert(""))
+        graph_hundred_component_in += delete_space
+        graph_hundred_component_in += pynini.union(
+            graph_teen | pynutil.insert("00"),
+            (graph_ties | pynutil.insert("0")) + delete_space + (graph_digit | pynutil.insert("0")),
         )
+
+        # graph_hundred_component_at_least_one_none_zero_digit = graph_hundred_component @ (
+        #     pynini.closure(NEMO_DIGIT) + (NEMO_DIGIT - "0") + pynini.closure(NEMO_DIGIT)
+        # )
+        graph_hundred_component_at_least_one_none_zero_digit = graph_hundred_component
+
         self.graph_hundred_component_at_least_one_none_zero_digit = (
             graph_hundred_component_at_least_one_none_zero_digit
         )
@@ -114,6 +123,33 @@ class CardinalFst(GraphFst):
             graph_zero,
         )
 
+        graph_thousands_component = pynini.union(
+            graph_hundred_component_in + delete_space + pynutil.delete("thousand"),
+            pynutil.insert("00", weight=0.1),
+        )
+
+        graph_lakhs_component = pynini.union(
+            graph_hundred_component_in + delete_space + pynutil.delete("lakh"),
+            pynutil.insert("00", weight=0.1)
+        )
+        #
+        graph_crores_component = pynini.union(
+            graph_hundred_component_in + delete_space + pynutil.delete("crore"),
+            pynutil.insert("000", weight=0.1)
+        )
+        #
+        graph_in = pynini.union(
+            graph_crores_component
+            + delete_space
+            + graph_lakhs_component
+            + delete_space
+            + graph_thousands_component
+            + delete_space
+            + graph_hundred_component,
+            graph_zero,
+        )
+
+        graph = pynini.union(graph, graph_in)
         graph = graph @ pynini.union(
             pynutil.delete(pynini.closure("0")) + pynini.difference(NEMO_DIGIT, "0") + pynini.closure(NEMO_DIGIT), "0"
         )

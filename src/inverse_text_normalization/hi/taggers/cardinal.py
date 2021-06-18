@@ -71,7 +71,7 @@ class CardinalFst(GraphFst):
         graph_hundred = pynini.cross("सौ", "00")
         graph_crore = pynini.cross("करोड़", "0000000")
         graph_lakh = pynini.cross("लाख", "00000")
-        graph_thousand  = pynini.cross("हज़ार", "000")
+        graph_thousand  = pynini.cross("हज़ार", "000") | pynini.cross("हजार", "000")
 
         graph_hundred_component = pynini.union(graph_digit + delete_space + pynutil.delete("सौ") + delete_space,
                                                pynutil.insert("0"))
@@ -101,7 +101,7 @@ class CardinalFst(GraphFst):
         )
 
         graph_thousands_component = pynini.union(
-            graph_hundred_component_at_least_one_none_zero_digit + delete_space + pynutil.delete("हज़ार"),
+            graph_hundred_component_at_least_one_none_zero_digit + delete_space + (pynutil.delete("हज़ार") | pynutil.delete("हजार")),
             pynutil.insert("00", weight=0.1),
         )
 
