@@ -41,7 +41,9 @@ inverse_normalize_text(['I have twenty cars',
                         'The army had four thousand six hundred forty six horses'],
                          lang='en')
 inverse_normalize_text(['दस लाख एक हज़ार चार सौ बीस', 'चार करोड़ चार लाख'], lang='hi')
+inverse_normalize_text(['મારી પાસે ત્રણ બિલાડીઓ છે', 'ચાર કરોડ ચાર લાખ', 'તેને એક હજાર ચારસો ચાર રૂપિયા આપો'], lang='gu')
 ['I have 20 cars', 'The army had 4646 horses']
-['10,01,420', '4,04,00,000']                    
+['10,01,420', '4,04,00,000']    
+['મારી પાસે 3 બિલાડીઓ છે', '4,04,00,000', 'તેને ₹ 1,404 આપો']
 ```
 
