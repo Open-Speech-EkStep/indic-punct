@@ -2,21 +2,12 @@
 
 ## Installation Instructions 
 
-### Method 1 
 ```buildoutcfg
 git clone https://github.com/Open-Speech-EkStep/indic-punct.git
 cd indic-punct
 bash install.sh
 python setup.py bdist_wheel
 pip install -e .
-```
-
-### Method 2 
-```buildoutcfg
-git clone https://github.com/Open-Speech-EkStep/indic-punct.git
-cd indic-punct
-bash install.sh
-pip install git+https://github.com/Open-Speech-EkStep/indic-punct.git#egg=indic-punct
 ```
 
 ## Usage
