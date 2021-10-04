@@ -36,17 +36,17 @@ class Punctuation:
 
         if not os.path.exists(self.model_path):
             wget.download(
-                'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.pt',
+                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
                 self.model_path, bar=self.bar_thermometer)
 
         if not os.path.exists(self.encoder_path):
             wget.download(
-                'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi.json',
+                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
                 self.encoder_path, bar=self.bar_thermometer)
 
         if not os.path.exists(self.dict_map):
             wget.download(
-                'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/hi/hi_dict.json',
+                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
                 self.dict_map, bar=self.bar_thermometer)
 
     def load_model_parameters(self):
@@ -78,7 +78,7 @@ class Punctuation:
         tokens = self.tokenizer.convert_ids_to_tokens(input_ids.to('cpu').numpy()[0])
         return tokens, label_indices
 
-    def punctuate_text_hindi(self, text):
+    def punctuate_text_others(self, text):
 
         with open(self.encoder_path) as label_encoder:
             train_encoder = json.load(label_encoder)
@@ -125,11 +125,15 @@ class Punctuation:
     def punctuate_text(self, text):
         if self.language_code == 'en':
             return self.punctuate_text_english(text)
-        elif self.language_code == 'hi':
-            return self.punctuate_text_hindi(text)
+        elif self.language_code in ['hi', 'gu']:
+            return self.punctuate_text_others(text)
 
 
 if __name__ == "__main__":
-    print(Punctuation('hi').punctuate_text_hindi(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था', ' मेहुल को भारत को सौंप दिया जाए']))
-    print(Punctuation('en').punctuate_text_english(['how are you', 'great how about you']))
-    print(Punctuation('en').punctuate_text(['how are you', 'great how about you']))
+#     print(Punctuation('hi').punctuate_text(['नीरव मोदी को लंदन में पकड़ लिया गया था लेकिन मेहुल चोकसी लगातार एंटीगुआ में छिपा हुआ था', ' मेहुल को भारत को सौंप दिया जाए']))
+    #print(Punctuation('en').punctuate_text_english(['how are you', 'great how about you']))
+    #print(Punctuation('en').punctuate_text(['how are you', 'great how about you']))
+    print(Punctuation('gu').punctuate_text(['પોઇન્ટ સાથે ટેબલમાં ચોથા નંબરે છે', 'શુભમન ગિલ સુનીલ નારાયણ શાકિબ અલ હસન ટિમ સાઉથી વરુણ ચક્રવર્તી શિવમ માવી', 
+                       'તું ધર્મિષ્ઠ છતાં આવું પાપાચરણ કરે છે મારા નામને આ લાંછન લાગ્યું છે ત્યારથી',
+                       'પુસ્તકાલયો અને પ્રકાશનગૃહો સાથે સહકાર સાધીને તેમને સાથે લઈ ચાલવું રહેશે શું આપ આ કાર્યમાં અમારી મદદ કરી શકો તેમ છો',
+                       'બુલેટિન બોર્ડ પરિયોજનાઓ સ્રોત અને વિકિપીડિયાનાં બહોળા કાર્યક્ષેત્રને આવરી લેતી પ્રવૃત્તિઓ']))
