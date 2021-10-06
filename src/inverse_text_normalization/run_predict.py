@@ -1,6 +1,7 @@
 from inverse_text_normalization.hi.run_predict import inverse_normalize_text as hi_itn
 from inverse_text_normalization.en.run_predict import inverse_normalize_text as en_itn
 from inverse_text_normalization.gu.run_predict import inverse_normalize_text as gu_itn
+from inverse_text_normalization.te.run_predict import inverse_normalize_text as te_itn
 
 
 def format_numbers_with_commas(sent, lang):
@@ -53,6 +54,12 @@ def inverse_normalize_text(text_list, lang):
         return itn_results_formatted
     elif lang == 'gu':
         itn_results = gu_itn(text_list)
+        itn_results_formatted = [format_numbers_with_commas(sent=sent, lang='hi') for sent in itn_results]
+        return itn_results_formatted
+
+    elif lang == 'te':
+
+        itn_results = te_itn(text_list)
         itn_results_formatted = [format_numbers_with_commas(sent=sent, lang='hi') for sent in itn_results]
         return itn_results_formatted
 
