@@ -84,7 +84,7 @@ class TeluguInverseTextNormalization(unittest.TestCase):
 
     def test_num_with_hundreds_are_converted_to_numerals(self):
         data = ['వంద',  # vanda (100)
-                'ఒకటి వంద', # okati vanda (one hundred) 
+                'ఒకటి వంద', # okati vanda (one hundred)
                 'రెండు వంద',  # Rendu vanda
                 'రెండు వందలు',  # Rendu vandalu 200
                 'తొమ్మిది వందలు మూడు',  # tomidi vandalu mudu 903
