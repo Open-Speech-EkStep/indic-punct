@@ -17,6 +17,7 @@ Currently (v 0.0.5) we are supporting the following languages:
   - Hindi
   - English
   - Gujarati
+  - Telugu
 - Inverse Text Normalization:
   - Hindi
   - English
