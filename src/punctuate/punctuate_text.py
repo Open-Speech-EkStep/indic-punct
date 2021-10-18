@@ -106,6 +106,8 @@ class Punctuation:
                     new_tokens.append(current_word)
             full_text = ''
             tokenized_text = indic_tokenize.trivial_tokenize_indic(sentence)
+            
+            new_labels = ['blank' if x=='PAD' else x for x in new_labels] #fix for PAD predicted in outputs
 
             if len(tokenized_text) == len(new_labels):
                 full_text_tokens = tokenized_text
