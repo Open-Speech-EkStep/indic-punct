@@ -125,7 +125,7 @@ class Punctuation:
     def punctuate_text(self, text):
         if self.language_code == 'en':
             return self.punctuate_text_english(text)
-        elif self.language_code in ['hi', 'gu', 'te']:
+        elif self.language_code in ['hi', 'gu', 'te', 'mr]:
             return self.punctuate_text_others(text)
 
 
