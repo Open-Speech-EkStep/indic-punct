@@ -14,10 +14,11 @@ pip install -e .
 
 Currently (v 0.0.5) we are supporting the following languages:
 - Punctuation:
-  - Hindi
-  - English
-  - Gujarati
-  - Telugu
+  - Hindi ('hi')
+  - English ('en')
+  - Gujarati ('gu')
+  - Telugu ('te')
+  - Marathi ('mr')
 - Inverse Text Normalization:
   - Hindi
   - English
