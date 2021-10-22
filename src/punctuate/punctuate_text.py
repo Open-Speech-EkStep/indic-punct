@@ -127,11 +127,21 @@ class Punctuation:
     def punctuate_text(self, text):
         if self.language_code == 'en':
             return self.punctuate_text_english(text)
-        elif self.language_code in ['hi', 'gu', 'te', 'mr']:
+        elif self.language_code in ['hi', 'gu', 'te', 'mr', 'kn']:
             return self.punctuate_text_others(text)
 
 
 if __name__ == "__main__":
+    
+    kannada = Punctuation('kn')
+    print(*kannada.punctuate_text(
+        ['ವೀಡಿಯೋದಲ್ಲಿ ಏನಿದೆ',
+        'ಹೇಗೆ ದೀರ್ಘಕಾಲದ ಕೊಲೈಟಿಸ್ ತಡೆಗಟ್ಟಲು',
+        'ಡಿಸೈನರ್ ಸಲಹೆಃ ನಿಮ್ಮ ಕೋಣೆ ತುಂಬಾ ಕಡಿಮೆಯಾಗಿರುವುದರಿಂದ ತೊಂದರೆ ನಿದ್ರಿಸುವುದೇ',
+        'ದೇಹದಲ್ಲಿ ಪೋಷಕಾಂಶಗಳು ಕ್ಯಾಲ್ಸಿಯಂ ಜಿಂಕ್ ಕಬ್ಬಿಣ ಇತ್ಯಾದಿ ಕೊರತೆ',
+        'ಆದರೆ ಬಿಸಿಸಿಐ ಹಾಗೂ ತಮ್ಮ ಪರ ವಕೀಲರೊಂದಿಗೆ ನಿರಂತರವಾಗಿ ಸಂಪರ್ಕದಲ್ಲಿದ್ದಾರೆ']
+        ), sep='\n')
+    
     telugu = Punctuation('te')
     print(*telugu.punctuate_text(
         ['జీనియస్','ఈ ఫిర్యాదుపై ఈ ఏడాది లాడౌ అనంతరం విచారణ జరిపిన హిస్సార్ పోలీసులు యువరాపై ఎస్సీ, ఎస్టీ అట్రాసిటీ కింద కేసు నమోదు చేసారు']
