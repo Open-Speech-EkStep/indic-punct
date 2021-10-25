@@ -127,11 +127,19 @@ class Punctuation:
     def punctuate_text(self, text):
         if self.language_code == 'en':
             return self.punctuate_text_english(text)
-        elif self.language_code in ['hi', 'gu', 'te', 'mr', 'kn']:
+        elif self.language_code in ['hi', 'gu', 'te', 'mr', 'kn', 'pa']:
             return self.punctuate_text_others(text)
 
 
 if __name__ == "__main__":
+    
+    punjabi = Punctuation('pa')
+    print(*punjabi.punctuate_text(
+        ['ਸਰੀਰ ਵਿੱਚ ਕੈਲਸ਼ੀਅਮ ਜ਼ਿੰਕ ਆਇਰਨ ਆਦਿ ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ ਦੀ ਕਮੀ ਹੁੰਦੀ ਹੈ',
+        'ਕੀ ਆਰਿਅਨ ਖਾਨ ਘਰ ਤੇ ਦੀਵਾਲੀਆਪਨ ਖਰਚ ਕਰਦਾ ਹੈ',
+        'ਭਾਜਪਾ ਕਾਂਗਰਸ ਅਤੇ ਜਨਤਾ ਦਲ ਵੱਕਾਰੀ ਸੀਟਾਂ ਹਾਸਲ ਕਰਨ ਲਈ ਸਾਰੇ ਕਦਮ ਵਾਪਸ ਲੈ ਰਹੇ ਹਨ',
+        'ਭਾਰਤ-ਪਾਕਿਸਤਾਨ ਮੈਚ ਨਾਲ ਸਬੰਧਤ ਹੈਸ਼ਟੈਗ ਐਤਵਾਰ ਸਵੇਰ ਤੋਂ ਸੋਸ਼ਲ ਮੀਡੀਆ ਤੇ ਟ੍ਰੈਂਡ ਕਰ ਰਹੇ ਹਨ']
+    ), sep='\n')
     
     kannada = Punctuation('kn')
     print(*kannada.punctuate_text(
