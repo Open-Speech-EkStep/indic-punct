@@ -19,6 +19,8 @@ Currently (v 0.0.5) we are supporting the following languages:
   - Gujarati ('gu')
   - Telugu ('te')
   - Marathi ('mr')
+  - Kannada ('kn')
+  - Punjabi ('pa')
 - Inverse Text Normalization:
   - Hindi
   - English
