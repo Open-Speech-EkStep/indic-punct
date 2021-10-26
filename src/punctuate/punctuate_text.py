@@ -13,14 +13,13 @@ from nemo.collections.nlp.models import PunctuationCapitalizationModel
 class Punctuation:
     def __init__(self, language_code):
         self.language_code = language_code
+        self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
             self.model = PunctuationCapitalizationModel.from_pretrained("punctuation_en_bert")
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
         else:
             self.model_path = 'model_data/' + self.language_code + '.pt'
             self.encoder_path = 'model_data/' + self.language_code + '.json'
             self.dict_map = 'model_data/' + self.language_code + '_dict.json'
-            self.device = "cuda" if torch.cuda.is_available() else "cpu"
             self.tokenizer, self.model = self.load_model_parameters()
 
 
@@ -64,6 +63,7 @@ class Punctuation:
         model = nn.DataParallel(model)
         checkpoint = torch.load(self.model_path, map_location=self.device)
         model.load_state_dict(checkpoint['state_dict'])
+        model = model.module.to(self.device)
 
         model.eval()
         return tokenizer, model
