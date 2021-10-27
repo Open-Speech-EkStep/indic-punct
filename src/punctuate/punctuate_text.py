@@ -15,11 +15,12 @@ class Punctuation:
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
-            self.model = PunctuationCapitalizationModel.from_pretrained("punctuation_en_bert")
+            self.model_path = 'deployed_models/model_data/punctuation_en_bert.nemo'
+            self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
         else:
-            self.model_path = 'model_data/' + self.language_code + '.pt'
-            self.encoder_path = 'model_data/' + self.language_code + '.json'
-            self.dict_map = 'model_data/' + self.language_code + '_dict.json'
+            self.model_path = 'deployed_models/model_data/' + self.language_code + '.pt'
+            self.encoder_path = 'deployed_models/model_data/' + self.language_code + '.json'
+            self.dict_map = 'deployed_models/model_data/' + self.language_code + '_dict.json'
             self.tokenizer, self.model = self.load_model_parameters()
 
 
@@ -30,8 +31,8 @@ class Punctuation:
 
     def download_model_data(self):
 
-        if not os.path.exists('model_data'):
-            os.makedirs('model_data', exist_ok=True)
+        if not os.path.exists('deployed_models/model_data'):
+            os.makedirs('deployed_models/model_data', exist_ok=True)
 
         if not os.path.exists(self.model_path):
             wget.download(
