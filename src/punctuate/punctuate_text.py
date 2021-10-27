@@ -88,10 +88,12 @@ class Punctuation:
 
     def punctuate_text_others(self, text):
         print('current working dir:', os.getcwd())
-        with open(self.encoder_path) as label_encoder:
+        print('abs path:', os.path.abspath(self.encoder_path))
+
+        with open(os.path.abspath(self.encoder_path)) as label_encoder:
             train_encoder = json.load(label_encoder)
 
-        with open(self.dict_map) as dict_map:
+        with open(os.path.abspath(self.dict_map)) as dict_map:
             punctuation_dict = json.load(dict_map)
 
         punctuated_sentences = []
