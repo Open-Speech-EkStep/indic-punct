@@ -87,7 +87,7 @@ class Punctuation:
         return tokens, label_indices
 
     def punctuate_text_others(self, text):
-
+        print('current working dir:', os.getcwd())
         with open(self.encoder_path) as label_encoder:
             train_encoder = json.load(label_encoder)
 
