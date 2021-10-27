@@ -16,6 +16,7 @@ class Punctuation:
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
             self.model_path = 'deployed_models/model_data/punctuation_en_bert.nemo'
+            self.download_model_data()
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
         else:
             self.model_path = 'deployed_models/model_data/' + self.language_code + '.pt'
@@ -34,20 +35,26 @@ class Punctuation:
         if not os.path.exists('deployed_models/model_data'):
             os.makedirs('deployed_models/model_data', exist_ok=True)
 
-        if not os.path.exists(self.model_path):
-            wget.download(
-                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
-                self.model_path, bar=self.bar_thermometer)
+        if self.language_code == 'en':
+            if not os.path.exists(self.model_path):
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_bert.nemo',
+                    self.model_path, bar=self.bar_thermometer)
+        else:
+            if not os.path.exists(self.model_path):
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
+                    self.model_path, bar=self.bar_thermometer)
 
-        if not os.path.exists(self.encoder_path):
-            wget.download(
-                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
-                self.encoder_path, bar=self.bar_thermometer)
+            if not os.path.exists(self.encoder_path):
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
+                    self.encoder_path, bar=self.bar_thermometer)
 
-        if not os.path.exists(self.dict_map):
-            wget.download(
-                f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
-                self.dict_map, bar=self.bar_thermometer)
+            if not os.path.exists(self.dict_map):
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
+                    self.dict_map, bar=self.bar_thermometer)
 
     def load_model_parameters(self):
         self.download_model_data()
