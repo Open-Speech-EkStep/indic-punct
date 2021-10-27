@@ -65,7 +65,7 @@ class CardinalFst(GraphFst):
         HINDI_DIGIT_WITH_ZERO = pynini.union(*hindi_digits_with_zero).optimize()
 
         graph_zero = pynini.string_file(get_abs_path(data_path + "numbers/zero.tsv"))
-        graph_tens = pynini.string_file(get_abs_path(data_path + "numbers/hindi_tens_en.tsv"))
+        graph_tens = pynini.string_file(get_abs_path(data_path + "numbers/tens.tsv"))
         graph_digit = pynini.string_file(get_abs_path(data_path + "numbers/digit.tsv"))
 
         graph_hundred = pynini.cross("सौ", "00")
