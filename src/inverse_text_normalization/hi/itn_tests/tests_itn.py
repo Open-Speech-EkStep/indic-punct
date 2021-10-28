@@ -19,6 +19,27 @@ class HindiInverseTextNormalization(unittest.TestCase):
 
         self.assertEqual(expected_output, inverse_normalizer_prediction)
 
+    def test_context_based_freezing_freezes_one_and_two(self):
+        data = ['एक हज़ार चार सौ बीस',
+                'एक',
+                'दो',
+                'तीन',
+                'मुझे दो पानी की बोतल दो',
+                'मुझे दो सौ पानी की बोतल दो',
+                'मुझे दो रुपये दो']
+        expected_output = ['1,420',
+                           'एक',
+                           'दो',
+                           '3',
+                           'मुझे दो पानी की बोतल दो',
+                           'मुझे 200 पानी की बोतल दो',
+                           'मुझे ₹ 2 दो']
+
+        inverse_normalizer_prediction = inverse_normalize_text(data, lang='hi')
+        inverse_normalizer_prediction = [sent.replace('\r', '') for sent in inverse_normalizer_prediction]
+
+        self.assertEqual(expected_output, inverse_normalizer_prediction)
+
     def test_hundreds_are_converted_to_numerals(self):
         data = ['रीटा के पास चार सौ बीस बिल्लियाँ हैं।']
         expected_output = ['रीटा के पास 420 बिल्लियाँ हैं।']

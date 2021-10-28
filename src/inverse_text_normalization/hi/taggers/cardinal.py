@@ -131,32 +131,12 @@ class CardinalFst(GraphFst):
         fst_lakh = fst+graph_lakh # handles words like चार हज़ार लाख
         fst = pynini.union(fst, fst_crore, fst_lakh, graph_crore, graph_lakh, graph_thousand, graph_hundred)
 
-        # inverse_order_fst = pynini.union(
-        #     graph_hundred_component
-        #     + delete_space
-        #     + graph_thousands
-        #     + delete_space
-        #     + graph_lakhs
-        #     + delete_space
-        #     + graph_crore,
-        # )
+        labels_exception = [num_to_word(x) for x in range(1, 3)]
+        graph_exception = pynini.union(*labels_exception)
 
-        # fst = pynini.union(inverse_order_fst + fst, fst, inverse_order_fst)
-        # fst = inverse_order_fst
-        # fst = fst @ pynini.union(
-        #     pynutil.delete(pynini.closure("०")) + pynini.difference(HINDI_DIGIT_WITH_ZERO, "०") + pynini.closure(
-        #         HINDI_DIGIT_WITH_ZERO), "०"
-        # )
-
-        # labels_exception = [num_to_word(x) for x in range(0, 5)]
-        # graph_exception = pynini.union(*labels_exception)
-        #
-        # graph = pynini.cdrewrite(pynutil.delete("and"), NEMO_SPACE, NEMO_SPACE, NEMO_SIGMA) @ graph
-        #
         self.graph_no_exception = fst
-        #
-        # #self.graph = (pynini.project(graph, "input") - graph_exception.arcsort()) @ graph
-        self.graph = (pynini.project(fst, "input")) @ fst
+
+        self.graph = (pynini.project(fst, "input") - graph_exception.arcsort()) @ fst
 
         optional_minus_graph = pynini.closure(
             pynutil.insert("negative: ") + pynini.cross("minus", "\"-\"") + NEMO_SPACE, 0, 1

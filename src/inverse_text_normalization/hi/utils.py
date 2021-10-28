@@ -18,7 +18,9 @@ import inflect
 
 _inflect = inflect.engine()
 
+from inverse_text_normalization.hi.data_loader_utils import get_abs_path
 
+data_path = 'data/'
 def num_to_word(x: Union[str, int]):
     """
     converts integer to spoken representation
@@ -26,9 +28,16 @@ def num_to_word(x: Union[str, int]):
     Args
         x: integer
 
-    Returns: spoken representation 
+    Returns: spoken representation
     """
     if isinstance(x, int):
         x = str(x)
-        x = _inflect.number_to_words(str(x)).replace("-", " ").replace(",", "")
+        # x = _inflect.number_to_words(str(x)).replace("-", " ").replace(",", "")
+        with open(get_abs_path(data_path + "numbers/digit.tsv")) as f:
+            lines = f.readlines()
+        for line in lines:
+
+            if line.split('\t')[1].strip() == x.strip():
+                x = line.split('\t')[0].strip()
+
     return x
