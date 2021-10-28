@@ -5,7 +5,7 @@ with open("README.md", 'r') as f:
 
 setup(
     name="indic-punct",
-    version='0.0.9',
+    version='2.0.0',
     description='Punctuation and inverse text normalization for Indic languages and English',
     long_description=long_description,
     long_description_content_type='text/markdown',
