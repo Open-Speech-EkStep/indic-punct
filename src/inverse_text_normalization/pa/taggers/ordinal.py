@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from inverse_text_normalization.mr.data_loader_utils import get_abs_path
-from inverse_text_normalization.mr.graph_utils import NEMO_CHAR, GraphFst
+from inverse_text_normalization.pa.data_loader_utils import get_abs_path
+from inverse_text_normalization.pa.graph_utils import NEMO_CHAR, GraphFst
 
 # from inverse_text_normalization.lang_params import LANG
 # data_path = f'inverse_text_normalization/data/{LANG}_data/'

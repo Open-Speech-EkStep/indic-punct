@@ -111,6 +111,16 @@ class PunjabiInverseTextNormalization(unittest.TestCase):
 
         self.assertEqual(expected_output, inverse_normalizer_prediction)
 
+    def test_decimal_words_are_converted_to_numerals(self):
+        data = ['ਸਤਾਸੀ ਦਸ਼ਮਲਵ ਸਿਫਰ ਸਿਫਰ ਸਿਫਰ ਤਿੰਨ', 'ਚਾਰ ਕਰੋੜ ਇੱਕੀ ਲੱਖ ਦਸ਼ਮਲਵ ਸੱਤ ਸਿਫਰ ਇੱਕ']
+        expected_output = ['87.0003', '4,21,00,000.701']
+
+        inverse_normalizer_prediction = inverse_normalize_text(data, lang='pa')
+
+        inverse_normalizer_prediction = [sent.replace('\r', '') for sent in inverse_normalizer_prediction]
+
+        self.assertEqual(expected_output, inverse_normalizer_prediction)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -160,20 +160,3 @@ class CardinalFst(GraphFst):
         final_graph = self.add_tokens(final_graph)
         self.fst = final_graph.optimize()
 
-        # labels_exception = [num_to_word(x) for x in range(1, 2)]
-        # print("This is labels exp: ",labels_exception)
-        # graph_exception = pynini.union(*labels_exception)
-
-        # self.graph_no_exception = fst
-
-        # self.fst = (pynini.project(fst, "input")) @ fst
-
-        # self.fst = (pynini.project(fst, "input") - graph_exception.arcsort()) @ fst
-        # optional_minus_graph = pynini.closure(
-        #     pynutil.insert("negative: ") + pynini.cross("minus", "\"-\"") + NEMO_SPACE, 0, 1
-        # )
-        #
-        # final_graph = optional_minus_graph + pynutil.insert("integer: \"") + self.fst + pynutil.insert("\"")
-        #
-        # final_graph = self.add_tokens(final_graph)
-        # self.fst = final_graph.optimize()
