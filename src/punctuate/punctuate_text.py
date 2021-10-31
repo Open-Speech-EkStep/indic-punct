@@ -91,7 +91,7 @@ class Punctuation:
     def punctuate_text_others(self, text):
         print('current working dir:', os.getcwd())
         print('abs path:', os.path.abspath(self.encoder_path))
-        print('cache path:', cache)
+#         print('cache path:', cache)
 
         with open(self.encoder_path) as label_encoder:
             train_encoder = json.load(label_encoder)
