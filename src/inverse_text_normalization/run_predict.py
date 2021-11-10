@@ -11,25 +11,28 @@ def format_numbers_with_commas(sent, lang):
         word_contains_digit = any(map(str.isdigit, word))
         currency_sign = ''
         if word_contains_digit:
-            pos_of_first_digit_in_word = list(map(str.isdigit, word)).index(True)
+            if len(word) > 4:
+                pos_of_first_digit_in_word = list(map(str.isdigit, word)).index(True)
 
-            if pos_of_first_digit_in_word != 0:  # word can be like $90,00,936.59
-                currency_sign = word[:pos_of_first_digit_in_word]
-                word = word[pos_of_first_digit_in_word:]
+                if pos_of_first_digit_in_word != 0:  # word can be like $90,00,936.59
+                    currency_sign = word[:pos_of_first_digit_in_word]
+                    word = word[pos_of_first_digit_in_word:]
 
-            s, *d = str(word).partition(".")
-            # getting [num_before_decimal_point, decimal_point, num_after_decimal_point]
-            if lang == 'hi':
-                # adding commas after every 2 digits after the last 3 digits
-                r = ",".join([s[x - 2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
+                s, *d = str(word).partition(".")
+                # getting [num_before_decimal_point, decimal_point, num_after_decimal_point]
+                if lang == 'hi':
+                    # adding commas after every 2 digits after the last 3 digits
+                    r = ",".join([s[x - 2:x] for x in range(-3, -len(s), -2)][::-1] + [s[-3:]])
+                else:
+                    r = ",".join([s[x - 3:x] for x in range(-3, -len(s), -3)][::-1] + [s[-3:]])
+
+                word = "".join([r] + d)  # joining decimal points as is
+
+                if currency_sign:
+                    word = currency_sign + word
+                words.append(word)
             else:
-                r = ",".join([s[x - 3:x] for x in range(-3, -len(s), -3)][::-1] + [s[-3:]])
-
-            word = "".join([r] + d)  # joining decimal points as is
-
-            if currency_sign:
-                word = currency_sign + word
-            words.append(word)
+                words.append(word)
         else:
             words.append(word)
     return ' '.join(words)
