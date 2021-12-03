@@ -77,30 +77,43 @@ class CardinalFst(GraphFst):
         hundred = hundreds[0].strip()
         hundred_alt = hundreds[1].strip()
         hundred_alt_2 = hundreds[2].strip()
+        hundred_alt_3 = hundreds[3].strip()
+        hundred_alt_4 = hundreds[4].strip()
+        hundred_alt_5 = hundreds[5].strip()
+        hundred_alt_6 = hundreds[6].strip()
+        hundred_alt_7 = hundreds[7].strip()
+        hundred_alt_8 = hundreds[8].strip()
 
         with open(get_abs_path(data_path + "numbers/thousands.tsv")) as f:
-            thousand = f.read().strip()
-        #thousand = thousands.strip()
+            thousands = f.readlines()
+        thousand = thousands[0].strip()
+        thousand_alt = thousands[1].strip()
 
         with open(get_abs_path(data_path + "numbers/lakh.tsv")) as f:
             lakhs = f.readlines()
         lakh = lakhs[0].strip()
+        lakh_alt = lakhs[1].strip()
 
         with open(get_abs_path(data_path + "numbers/crore.tsv")) as f:
             crores = f.readlines()
         crore = crores[0].strip()
 
-        graph_hundred = pynini.cross(hundred, "00") | pynini.cross(hundred_alt, "00") | pynini.cross(hundred_alt_2, "00")
+        graph_hundred = pynini.cross(hundred, "00") | pynini.cross(hundred_alt, "00")
         graph_crore = pynini.cross(crore, "0000000")
         graph_lakh = pynini.cross(lakh, "00000")
-        graph_thousand  = pynini.cross(thousand, "000")
+        graph_thousand = pynini.cross(thousand, "000")
 
-        graph_hundred_component = pynini.union(graph_digit + delete_space +(pynutil.delete(hundred) | pynutil.delete(hundred_alt) | pynutil.delete(hundred_alt_2)) + delete_space,
-                                               pynutil.insert("0"))
+        graph_hundred_component = pynini.union(graph_digit + delete_space + (pynutil.delete(hundred) | pynutil.delete(hundred_alt) | pynutil.delete(hundred_alt_2)
+                                  | pynutil.delete(hundred_alt_3) | pynutil.delete(hundred_alt_4) | pynutil.delete(hundred_alt_5) | pynutil.delete(hundred_alt_6)
+                                  | pynutil.delete(hundred_alt_7) | pynutil.delete(hundred_alt_8)) + delete_space, pynutil.insert("0"))
+
         graph_hundred_component += pynini.union(graph_tens, pynutil.insert("0") + (graph_digit | pynutil.insert("0")))
 
         # handling double digit hundreds like उन्निस सौ + digit/thousand/lakh/crore etc
-        graph_hundred_component_prefix_tens = pynini.union(graph_tens + delete_space +(  pynutil.delete(hundred) | pynutil.delete(hundred_alt) | pynutil.delete(hundred_alt_2)) + delete_space)
+        graph_hundred_component_prefix_tens = pynini.union(graph_tens + delete_space +(pynutil.delete(hundred) | pynutil.delete(hundred_alt) |
+                                              pynutil.delete(hundred_alt_2) | pynutil.delete(hundred_alt_3) | pynutil.delete(hundred_alt_4) |
+                                              pynutil.delete(hundred_alt_5) | pynutil.delete(hundred_alt_6) | pynutil.delete(hundred_alt_7) |
+                                              pynutil.delete(hundred_alt_8)) + delete_space)
                                                            # pynutil.insert("55"))
         graph_hundred_component_prefix_tens += pynini.union(graph_tens,
                                                             pynutil.insert("0") + (graph_digit | pynutil.insert("0")))
@@ -120,12 +133,12 @@ class CardinalFst(GraphFst):
         )
 
         graph_thousands_component = pynini.union(
-            graph_hundred_component_at_least_one_none_zero_digit + delete_space + pynutil.delete(thousand) ,
+            graph_hundred_component_at_least_one_none_zero_digit + delete_space + (pynutil.delete(thousand) | pynutil.delete(thousand_alt)),
             pynutil.insert("00", weight=0.1),
         )
 
         graph_lakhs_component = pynini.union(
-            graph_hundred_component_at_least_one_none_zero_digit + delete_space + pynutil.delete(lakh),
+            graph_hundred_component_at_least_one_none_zero_digit + delete_space + (pynutil.delete(lakh) | pynutil.delete(lakh_alt)),
             pynutil.insert("00", weight=0.1)
         )
 
