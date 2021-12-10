@@ -12,7 +12,7 @@ pip install -e .
 
 ## Usage
 
-Currently (v 2.0.4) we are supporting the following languages:
+Currently (v 2.0.6) we are supporting the following languages:
 - Punctuation:
   - Hindi ('hi')
   - English ('en')
@@ -40,6 +40,7 @@ Currently (v 2.0.4) we are supporting the following languages:
   - Malayalam
   - Odia
   - Assamese
+  - Kannada
 
 We are planning to add other Indic languages. 
 
@@ -103,6 +104,7 @@ inverse_normalize_text(['আমার পাঁচটি কলম আছে', '
 inverse_normalize_text(['ഇരുനൂറ്റി അമ്പത് രൂപ ഞാൻ അവന് കൊടുത്തു', 'അവൻ എനിക്ക് പത്ത് യൂറോ തന്നു'], lang='ml')
 inverse_normalize_text(['ମୋ ହାତରେ ପାଞ୍ଚ ଡଲାର ଅଛି', 'ମୋ ହାତରେ ପାଞ୍ଚ ଶହ ଟଙ୍କା ଅଛି', 'ମୋ ହାତରେ ସାତ ଶହ ୟୁରୋ ଅଛି'], lang='or')
 inverse_normalize_text(['মই 10 বাকচ মিঠাই বিতৰণ কৰিলো', 'নিৰান্নব্বৈটা কোটি পাঁচ লাখ আঠশ বাইছ'], lang='as')
+inverse_normalize_text(['ನನ್ನ ಕೈಯಲ್ಲಿ ಐದು ಡಾಲರ್ ಇದೆ', 'ನನ್ನ ಬ್ಯಾಗ್ ನಲ್ಲಿ ಐದು ನೂರು ರೂಪಾಯಿ ಪೆನ್ನಿದೆ', 'ನನ್ನ ಖಾತೆಯಲ್ಲಿ ಐದು ಕೋಟಿ ಯೂರೋ ಇದೆ'], lang='kn')
 
 ----Outputs----
 ['I have 20 cars', 'The army had 4646 horses']
@@ -116,5 +118,5 @@ inverse_normalize_text(['মই 10 বাকচ মিঠাই বিতৰণ 
 ['₹ 250 ഞാൻ അവന് കൊടുത്തു', 'അവൻ എനിക്ക് € 10 തന്നു']
 ['ମୋ ହାତରେ $ 5 ଅଛି', 'ମୋ ହାତରେ ₹ 500 ଅଛି', 'ମୋ ହାତରେ € 700 ଅଛି']
 ['মই 10 বাকচ মিঠাই বিতৰণ কৰিলো', '99,05,00,822']
+['ನನ್ನ ಕೈಯಲ್ಲಿ $ 5 ಇದೆ', 'ನನ್ನ ಬ್ಯಾಗ್ ನಲ್ಲಿ ₹ 500 ಪೆನ್ನಿದೆ', 'ನನ್ನ ಖಾತೆಯಲ್ಲಿ € 5,00,00,000 ಇದೆ']
 ```
-
