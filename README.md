@@ -12,7 +12,7 @@ pip install -e .
 
 ## Usage
 
-Currently (v 2.0.5) we are supporting the following languages:
+Currently (v 2.0.6) we are supporting the following languages:
 - Punctuation:
   - Hindi ('hi')
   - English ('en')
