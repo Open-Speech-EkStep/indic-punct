@@ -114,46 +114,51 @@ class Punctuation:
         tokens = self.tokenizer.convert_ids_to_tokens(input_ids.to('cpu').numpy()[0])
         return tokens, label_indices
 
-    def punctuate_text_others(self, text):
+    def punctuate_text_others_sentence(self, sentence):
 
-        punctuated_sentences = []
+        tokens, label_indices = self.get_tokens_and_labels_indices_from_text(sentence)
 
-        for sentence in text:
-
-            tokens, label_indices = self.get_tokens_and_labels_indices_from_text(sentence)
-
-            new_tokens = []
-            new_labels = []
-            for i in range(1, len(tokens) - 1):
-                if tokens[i].startswith("▁"):
-                    current_word = tokens[i][1:]
-                    new_labels.append(list(self.train_encoder.keys())[list(self.train_encoder.values()).index(label_indices[0][i])])
-                    for j in range(i + 1, len(tokens) - 1):
-                        if not tokens[j].startswith("▁"):
-                            current_word = current_word + tokens[j]
-                        if tokens[j].startswith("▁"):
-                            break
-                    new_tokens.append(current_word)
-            full_text = ''
-            tokenized_text = indic_tokenize.trivial_tokenize_indic(sentence)
+        new_tokens = []
+        new_labels = []
+        for i in range(1, len(tokens) - 1):
+            if tokens[i].startswith("▁"):
+                current_word = tokens[i][1:]
+                new_labels.append(list(self.train_encoder.keys())[list(self.train_encoder.values()).index(label_indices[0][i])])
+                for j in range(i + 1, len(tokens) - 1):
+                    if not tokens[j].startswith("▁"):
+                        current_word = current_word + tokens[j]
+                    if tokens[j].startswith("▁"):
+                        break
+                new_tokens.append(current_word)
+        full_text = ''
+        tokenized_text = indic_tokenize.trivial_tokenize_indic(sentence)
             
-            new_labels = ['blank' if x=='PAD' else x for x in new_labels] #fix for PAD predicted in outputs
+        new_labels = ['blank' if x=='PAD' else x for x in new_labels] #fix for PAD predicted in outputs
 
-            if len(tokenized_text) == len(new_labels):
-                full_text_tokens = tokenized_text
-            else:
-                full_text_tokens = new_tokens
+        if len(tokenized_text) == len(new_labels):
+            full_text_tokens = tokenized_text
+        else:
+            full_text_tokens = new_tokens
 
-            for word, punctuation in zip(full_text_tokens, new_labels):
-                full_text = full_text + word + self.punctuation_dict[punctuation]
-            punctuated_sentences.append(full_text)
+        for word, punctuation in zip(full_text_tokens, new_labels):
+            full_text = full_text + word + self.punctuation_dict[punctuation]
 
-        return punctuated_sentences
+        return full_text
+
+    def punctuate_text_others(self, text):
+        sentences = []
+        for sentence in text:
+            sentences.append(self.punctuate_text_others_sentence(sentence))
+        return sentences
+
+    def punctuate_english_sentence(self, sentence):
+        return self.model.add_punctuation_capitalization([sentence])
 
     def punctuate_text_english(self, text):
-
-        #for sentence in tqdm(text)
-        return self.model.add_punctuation_capitalization(text)
+        sentences = []
+        for sentence in text:
+            sentences.append(self.punctuate_english_sentence(sentence)[0])
+        return sentences
 
     def punctuate_text(self, text):
         if self.language_code == 'en':
@@ -195,5 +200,5 @@ if __name__ == "__main__":
     print(marathi.punctuate_text(
         ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']))
     '''
-    english = Punctuation('hi')
-    print(english.punctuate_text(['मेहुल को भारत को सौंप दिया जाए']))
+    hindi = Punctuation('hi')
+    print(hindi.punctuate_text(["इस श्रेणी में केवल निम्नलिखित उपश्रेणी है", "मेहुल को भारत को सौंप दिया जाए"]))
