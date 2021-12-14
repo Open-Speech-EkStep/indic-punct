@@ -9,6 +9,7 @@ import wget
 import sys
 from nemo.collections.nlp.models import PunctuationCapitalizationModel
 import sysconfig
+import string
 
 cache = sysconfig.get_path('purelib') + '/'
 
@@ -145,19 +146,54 @@ class Punctuation:
 
         return full_text
 
+    def punctuate_text_others_buffer(self, sentence, buffer_length=400):
+        words = sentence.split()
+        sentence_length = len(words)
+        txt = ''
+        beg_word = 0
+        i = 1
+        while sentence_length > buffer_length:
+            sentence_segment = ' '.join(words[beg_word:i*buffer_length])
+            txt = txt + self.punctuate_text_others_sentence(sentence_segment) + ' '
+            full_stop_position = len(txt) - txt[::-1].find('.') - 1
+            viram_position = len(txt) - txt[::-1].find('।') - 1
+            question_mark_position = len(txt) - txt[::-1].find('?') - 1
+            end_position = max([full_stop_position, viram_position, question_mark_position])
+            beg_word = len(txt[:end_position].translate(str.maketrans('', '', string.punctuation + '।')).split())
+            sentence_length = sentence_length - beg_word
+            i = i + 1
+            sentence = ' '.join(words[beg_word:])
+        return txt + self.punctuate_text_others_sentence(sentence)
+
     def punctuate_text_others(self, text):
         sentences = []
         for sentence in text:
-            sentences.append(self.punctuate_text_others_sentence(sentence))
+            sentences.append(self.punctuate_text_others_buffer(sentence))
         return sentences
 
-    def punctuate_english_sentence(self, sentence):
-        return self.model.add_punctuation_capitalization([sentence])
+    def punctuate_english_sentence(self, sentence, buffer_length=400):
+        words = sentence.split()
+        sentence_length = len(words)
+        txt = ''
+        beg_word = 0
+        i = 1
+        while sentence_length > buffer_length:
+            sentence_segment = ' '.join(words[beg_word:i*buffer_length])
+            txt = txt + self.model.add_punctuation_capitalization([sentence_segment])[0] + ' '
+            full_stop_position = len(txt) - txt[::-1].find('.') - 1
+            question_mark_position = len(txt) - txt[::-1].find('?') - 1
+            end_position = full_stop_position if full_stop_position >= question_mark_position else question_mark_position
+            beg_word = len(txt[:end_position].translate(str.maketrans('', '', string.punctuation + '।')).split())
+            sentence_length = sentence_length - beg_word
+            i = i + 1
+            sentence = ' '.join(words[beg_word:])
+
+        return txt + self.model.add_punctuation_capitalization([sentence])[0]
 
     def punctuate_text_english(self, text):
         sentences = []
         for sentence in text:
-            sentences.append(self.punctuate_english_sentence(sentence)[0])
+            sentences.append(self.punctuate_english_sentence(sentence))
         return sentences
 
     def punctuate_text(self, text):
@@ -168,7 +204,7 @@ class Punctuation:
 
 
 if __name__ == "__main__":
-    '''
+
     punjabi = Punctuation('pa')
     print(*punjabi.punctuate_text(
         ['ਸਰੀਰ ਵਿੱਚ ਕੈਲਸ਼ੀਅਮ ਜ਼ਿੰਕ ਆਇਰਨ ਆਦਿ ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ ਦੀ ਕਮੀ ਹੁੰਦੀ ਹੈ',
@@ -197,8 +233,7 @@ if __name__ == "__main__":
         ), sep='\n')
     
     marathi = Punctuation('mr')
-    print(marathi.punctuate_text(
-        ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']))
-    '''
-    hindi = Punctuation('hi')
-    print(hindi.punctuate_text(["इस श्रेणी में केवल निम्नलिखित उपश्रेणी है", "मेहुल को भारत को सौंप दिया जाए"]))
+    print(*marathi.punctuate_text(
+        ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']), sep='\n')
+
+
