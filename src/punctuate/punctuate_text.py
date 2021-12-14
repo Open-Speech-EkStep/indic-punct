@@ -12,6 +12,7 @@ import sysconfig
 
 cache = sysconfig.get_path('purelib') + '/'
 
+
 class Punctuation:
     def __init__(self, language_code):
         self.language_code = language_code
@@ -20,12 +21,12 @@ class Punctuation:
             self.model_path = cache+'deployed_models/model_data/punctuation_en_bert.nemo'
             self.download_model_data()
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
+            self.model = self.model.to(self.device)
         else:
             self.model_path = cache+'deployed_models/model_data/' + self.language_code + '.pt'
             self.encoder_path = cache+'deployed_models/model_data/' + self.language_code + '.json'
             self.dict_map = cache+'deployed_models/model_data/' + self.language_code + '_dict.json'
-            self.tokenizer, self.model = self.load_model_parameters()
-
+            self.tokenizer, self.model, self.train_encoder, self.punctuation_dict = self.load_model_parameters()
 
     def bar_thermometer(self, current, total, width=80):
         progress_message = "Downloading: %d%% [%d / %d] bytes" % (current / total * 100, current, total)
@@ -62,6 +63,8 @@ class Punctuation:
         self.download_model_data()
         with open(self.encoder_path) as label_encoder:
             train_encoder = json.load(label_encoder)
+        with open(self.dict_map) as dict_map:
+            punctuation_dict = json.load(dict_map)
 
         tokenizer = AlbertTokenizer.from_pretrained('ai4bharat/indic-bert')
 
@@ -76,7 +79,7 @@ class Punctuation:
         model = model.module.to(self.device)
 
         model.eval()
-        return tokenizer, model
+        return tokenizer, model, train_encoder, punctuation_dict
 
     def get_tokens_and_labels_indices_from_text(self, text):
 
@@ -89,15 +92,6 @@ class Punctuation:
         return tokens, label_indices
 
     def punctuate_text_others(self, text):
-        print('current working dir:', os.getcwd())
-        print('abs path:', os.path.abspath(self.encoder_path))
-        print('cache path:', cache)
-
-        with open(self.encoder_path) as label_encoder:
-            train_encoder = json.load(label_encoder)
-
-        with open(self.dict_map) as dict_map:
-            punctuation_dict = json.load(dict_map)
 
         punctuated_sentences = []
 
@@ -110,7 +104,7 @@ class Punctuation:
             for i in range(1, len(tokens) - 1):
                 if tokens[i].startswith("▁"):
                     current_word = tokens[i][1:]
-                    new_labels.append(list(train_encoder.keys())[list(train_encoder.values()).index(label_indices[0][i])])
+                    new_labels.append(list(self.train_encoder.keys())[list(self.train_encoder.values()).index(label_indices[0][i])])
                     for j in range(i + 1, len(tokens) - 1):
                         if not tokens[j].startswith("▁"):
                             current_word = current_word + tokens[j]
@@ -128,13 +122,14 @@ class Punctuation:
                 full_text_tokens = new_tokens
 
             for word, punctuation in zip(full_text_tokens, new_labels):
-                full_text = full_text + word + punctuation_dict[punctuation]
+                full_text = full_text + word + self.punctuation_dict[punctuation]
             punctuated_sentences.append(full_text)
 
         return punctuated_sentences
 
     def punctuate_text_english(self, text):
-        self.model = self.model.to(self.device)
+
+        #for sentence in tqdm(text)
         return self.model.add_punctuation_capitalization(text)
 
     def punctuate_text(self, text):
@@ -145,7 +140,7 @@ class Punctuation:
 
 
 if __name__ == "__main__":
-    
+    '''
     punjabi = Punctuation('pa')
     print(*punjabi.punctuate_text(
         ['ਸਰੀਰ ਵਿੱਚ ਕੈਲਸ਼ੀਅਮ ਜ਼ਿੰਕ ਆਇਰਨ ਆਦਿ ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ ਦੀ ਕਮੀ ਹੁੰਦੀ ਹੈ',
@@ -172,10 +167,10 @@ if __name__ == "__main__":
     print(*gujarati.punctuate_text(
         ['તું શું કરે છે', 'ઘણા દેશોએ રોગચાળાને કારણે બંધ થયાના લગભગ બે વર્ષ પછી હવે આંતરરાષ્ટ્રીય પ્રવાસીઓ માટે તેમની સરહદો ફરીથી ખોલી છે']
         ), sep='\n')
-
+    
     marathi = Punctuation('mr')
-    print(*marathi.punctuate_text(
-        ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']
-        ), sep='\n')
-
-                                    
+    print(marathi.punctuate_text(
+        ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']))
+    '''
+    english = Punctuation('hi')
+    print(english.punctuate_text(['मेहुल को भारत को सौंप दिया जाए']))
