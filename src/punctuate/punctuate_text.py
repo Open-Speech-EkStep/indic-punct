@@ -23,9 +23,10 @@ class Punctuation:
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
             self.model = self.model.to(self.device)
         else:
-            self.model_path = cache+'deployed_models/model_data/' + self.language_code + '.pt'
-            self.encoder_path = cache+'deployed_models/model_data/' + self.language_code + '.json'
-            self.dict_map = cache+'deployed_models/model_data/' + self.language_code + '_dict.json'
+            self.model_path = cache + 'deployed_models/model_data/' + self.language_code + '.pt'
+            self.albert_metadata = cache + 'deployed_models/model_data/albert_metadata/'
+            self.encoder_path = cache + 'deployed_models/model_data/' + self.language_code + '.json'
+            self.dict_map = cache + 'deployed_models/model_data/' + self.language_code + '_dict.json'
             self.tokenizer, self.model, self.train_encoder, self.punctuation_dict = self.load_model_parameters()
 
     def bar_thermometer(self, current, total, width=80):
@@ -38,26 +39,48 @@ class Punctuation:
         if not os.path.exists(cache+'deployed_models/model_data'):
             os.makedirs(cache+'deployed_models/model_data', exist_ok=True)
 
+        if not os.path.exists(cache + 'deployed_models/model_data/albert_metadata'):
+            os.makedirs(cache + 'deployed_models/model_data/albert_metadata/', exist_ok=True)
+
         if self.language_code == 'en':
             if not os.path.exists(self.model_path):
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_bert.nemo',
                     self.model_path, bar=self.bar_thermometer)
         else:
+            if len(os.listdir(self.albert_metadata)) != 4:
+                wget.download(
+                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/config.json',
+                    self.albert_metadata + 'config.json', bar=self.bar_thermometer
+                )
+                wget.download(
+                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/pytorch_model.bin',
+                    self.albert_metadata + 'pytorch_model.bin', bar=self.bar_thermometer
+                )
+                wget.download(
+                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/spiece.model',
+                    self.albert_metadata + 'spiece.model', bar=self.bar_thermometer
+                )
+                wget.download(
+                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/spiece.vocab',
+                    self.albert_metadata + 'spiece.vocab', bar=self.bar_thermometer
+                )
+
             if not os.path.exists(self.model_path):
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
-                    self.model_path, bar=self.bar_thermometer)
-
+                    self.model_path, bar=self.bar_thermometer
+                )
             if not os.path.exists(self.encoder_path):
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
-                    self.encoder_path, bar=self.bar_thermometer)
-
+                    self.encoder_path, bar=self.bar_thermometer
+                )
             if not os.path.exists(self.dict_map):
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
-                    self.dict_map, bar=self.bar_thermometer)
+                    self.dict_map, bar=self.bar_thermometer
+                )
 
     def load_model_parameters(self):
         self.download_model_data()
@@ -66,9 +89,9 @@ class Punctuation:
         with open(self.dict_map) as dict_map:
             punctuation_dict = json.load(dict_map)
 
-        tokenizer = AlbertTokenizer.from_pretrained('ai4bharat/indic-bert')
+        tokenizer = AlbertTokenizer.from_pretrained(self.albert_metadata)
 
-        model = AlbertForTokenClassification.from_pretrained('ai4bharat/indic-bert',
+        model = AlbertForTokenClassification.from_pretrained(self.albert_metadata,
                                                              num_labels=len(train_encoder),
                                                              output_attentions=False,
                                                              output_hidden_states=False)
