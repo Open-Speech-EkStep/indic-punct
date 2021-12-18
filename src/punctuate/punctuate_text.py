@@ -10,7 +10,7 @@ import sys
 from nemo.collections.nlp.models import PunctuationCapitalizationModel
 import sysconfig
 import string
-
+import shutil
 cache = sysconfig.get_path('purelib') + '/'
 
 
@@ -19,7 +19,8 @@ class Punctuation:
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
-            self.model_path = cache+'deployed_models/model_data/punctuation_en_bert.nemo'
+            os.environ["TRANSFORMERS_CACHE"] = str(cache + 'deployed_models/model_data/transformers_cache')
+            self.model_path = cache+'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
             self.model = self.model.to(self.device)
@@ -36,6 +37,9 @@ class Punctuation:
         sys.stdout.flush()
 
     def download_model_data(self):
+        
+        if not os.path.exists(cache + 'deployed_models/model_data/transformers_cache'):
+            os.makedirs(cache + 'deployed_models/model_data/transformers_cache')
 
         if not os.path.exists(cache+'deployed_models/model_data'):
             os.makedirs(cache+'deployed_models/model_data', exist_ok=True)
@@ -44,9 +48,17 @@ class Punctuation:
             os.makedirs(cache + 'deployed_models/model_data/albert_metadata/', exist_ok=True)
 
         if self.language_code == 'en':
+            if len(os.listdir(cache + 'deployed_models/model_data/transformers_cache')) != 15:
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
+                    cache + 'deployed_models/model_data/', bar=self.bar_thermometer
+                )
+                shutil.unpack_archive(cache + 'deployed_models/model_data' + '/distilbert_base_uncased_huggingface_files.zip',
+                                      cache + 'deployed_models/model_data/transformers_cache/')
+                
             if not os.path.exists(self.model_path):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_bert.nemo',
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_distilbert.nemo',
                     self.model_path, bar=self.bar_thermometer)
         else:
             if len(os.listdir(self.albert_metadata)) != 4:
@@ -204,6 +216,8 @@ class Punctuation:
 
 
 if __name__ == "__main__":
+    
+    '''
 
     punjabi = Punctuation('pa')
     print(*punjabi.punctuate_text(
@@ -237,3 +251,6 @@ if __name__ == "__main__":
         ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']), sep='\n')
 
 
+    '''
+    english = Punctuation('en')
+    print(*english.punctuate_text(['how are you']))
