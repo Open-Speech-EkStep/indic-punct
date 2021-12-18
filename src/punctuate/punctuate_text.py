@@ -9,14 +9,15 @@ import wget
 import sys
 from nemo.collections.nlp.models import PunctuationCapitalizationModel
 import string
-
+import shutil
 
 class Punctuation:
     def __init__(self, language_code):
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
-            self.model_path = 'deployed_models/model_data/punctuation_en_bert.nemo'
+            os.environ["TRANSFORMERS_CACHE"] = str('deployed_models/model_data/transformers_cache')
+            self.model_path = 'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
             self.model = self.model.to(self.device)
@@ -33,6 +34,9 @@ class Punctuation:
         sys.stdout.flush()
 
     def download_model_data(self):
+        
+        if not os.path.exists('deployed_models/model_data/transformers_cache'):
+            os.makedirs('deployed_models/model_data/transformers_cache')
 
         if not os.path.exists('deployed_models/model_data'):
             os.makedirs('deployed_models/model_data', exist_ok=True)
@@ -41,9 +45,17 @@ class Punctuation:
             os.makedirs('deployed_models/model_data/albert_metadata/', exist_ok=True)
 
         if self.language_code == 'en':
+            if len(os.listdir('deployed_models/model_data/transformers_cache')) != 15:
+                wget.download(
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
+                    'deployed_models/model_data/', bar=self.bar_thermometer
+                )
+                shutil.unpack_archive('deployed_models/model_data' + '/distilbert_base_uncased_huggingface_files.zip',
+                                      'deployed_models/model_data/transformers_cache/')
+                
             if not os.path.exists(self.model_path):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_bert.nemo',
+                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_distilbert.nemo',
                     self.model_path, bar=self.bar_thermometer)
         else:
             if len(os.listdir(self.albert_metadata)) != 4:
@@ -201,35 +213,5 @@ class Punctuation:
 
 
 if __name__ == "__main__":
-
-    punjabi = Punctuation('pa')
-    print(*punjabi.punctuate_text(
-        ['ਸਰੀਰ ਵਿੱਚ ਕੈਲਸ਼ੀਅਮ ਜ਼ਿੰਕ ਆਇਰਨ ਆਦਿ ਪੌਸ਼ਟਿਕ ਤੱਤਾਂ ਦੀ ਕਮੀ ਹੁੰਦੀ ਹੈ',
-        'ਕੀ ਆਰਿਅਨ ਖਾਨ ਘਰ ਤੇ ਦੀਵਾਲੀਆਪਨ ਖਰਚ ਕਰਦਾ ਹੈ',
-        'ਭਾਜਪਾ ਕਾਂਗਰਸ ਅਤੇ ਜਨਤਾ ਦਲ ਵੱਕਾਰੀ ਸੀਟਾਂ ਹਾਸਲ ਕਰਨ ਲਈ ਸਾਰੇ ਕਦਮ ਵਾਪਸ ਲੈ ਰਹੇ ਹਨ',
-        'ਭਾਰਤ-ਪਾਕਿਸਤਾਨ ਮੈਚ ਨਾਲ ਸਬੰਧਤ ਹੈਸ਼ਟੈਗ ਐਤਵਾਰ ਸਵੇਰ ਤੋਂ ਸੋਸ਼ਲ ਮੀਡੀਆ ਤੇ ਟ੍ਰੈਂਡ ਕਰ ਰਹੇ ਹਨ']
-    ), sep='\n')
-    
-    kannada = Punctuation('kn')
-    print(*kannada.punctuate_text(
-        ['ವೀಡಿಯೋದಲ್ಲಿ ಏನಿದೆ',
-        'ಹೇಗೆ ದೀರ್ಘಕಾಲದ ಕೊಲೈಟಿಸ್ ತಡೆಗಟ್ಟಲು',
-        'ಡಿಸೈನರ್ ಸಲಹೆಃ ನಿಮ್ಮ ಕೋಣೆ ತುಂಬಾ ಕಡಿಮೆಯಾಗಿರುವುದರಿಂದ ತೊಂದರೆ ನಿದ್ರಿಸುವುದೇ',
-        'ದೇಹದಲ್ಲಿ ಪೋಷಕಾಂಶಗಳು ಕ್ಯಾಲ್ಸಿಯಂ ಜಿಂಕ್ ಕಬ್ಬಿಣ ಇತ್ಯಾದಿ ಕೊರತೆ',
-        'ಆದರೆ ಬಿಸಿಸಿಐ ಹಾಗೂ ತಮ್ಮ ಪರ ವಕೀಲರೊಂದಿಗೆ ನಿರಂತರವಾಗಿ ಸಂಪರ್ಕದಲ್ಲಿದ್ದಾರೆ']
-        ), sep='\n')
-    
-    telugu = Punctuation('te')
-    print(*telugu.punctuate_text(
-        ['జీనియస్','ఈ ఫిర్యాదుపై ఈ ఏడాది లాడౌ అనంతరం విచారణ జరిపిన హిస్సార్ పోలీసులు యువరాపై ఎస్సీ, ఎస్టీ అట్రాసిటీ కింద కేసు నమోదు చేసారు']
-        ), sep='\n')
-
-    gujarati = Punctuation('gu')
-    print(*gujarati.punctuate_text(
-        ['તું શું કરે છે', 'ઘણા દેશોએ રોગચાળાને કારણે બંધ થયાના લગભગ બે વર્ષ પછી હવે આંતરરાષ્ટ્રીય પ્રવાસીઓ માટે તેમની સરહદો ફરીથી ખોલી છે']
-        ), sep='\n')
-    
-    marathi = Punctuation('mr')
-    print(*marathi.punctuate_text(
-        ['तू काय करत आहेस','साथीच्या आजारामुळे बंद झाल्यावर जवळजवळ दोन वर्षांनी अनेक देशांनी आता आंतरराष्ट्रीय पर्यटकांसाठी त्यांच्या सीमा पुन्हा उघडल्या आहेत']), sep='\n')
-
+    english = Punctuation('en')
+    print(english.punctuate_text(['how are you']))
