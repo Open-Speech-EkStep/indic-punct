@@ -16,11 +16,12 @@ class Punctuation:
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         if self.language_code == 'en':
-            os.environ["TRANSFORMERS_CACHE"] = str('deployed_models/model_data/transformers_cache')
+            #os.environ["TRANSFORMERS_CACHE"] = str('deployed_models/model_data/transformers_cache')
             self.model_path = 'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
             self.model = self.model.to(self.device)
+            self.transformers_cache = os.environ.get('TRANSFORMERS_CACHE')
         else:
             self.model_path = 'deployed_models/model_data/' + self.language_code + '.pt'
             self.albert_metadata = 'deployed_models/model_data/albert_metadata/'
@@ -35,8 +36,8 @@ class Punctuation:
 
     def download_model_data(self):
         
-        if not os.path.exists('deployed_models/model_data/transformers_cache'):
-            os.makedirs('deployed_models/model_data/transformers_cache')
+        if not os.path.exists(self.transformers_cache):
+            os.makedirs(self.transformers_cache)
 
         if not os.path.exists('deployed_models/model_data'):
             os.makedirs('deployed_models/model_data', exist_ok=True)
@@ -45,13 +46,13 @@ class Punctuation:
             os.makedirs('deployed_models/model_data/albert_metadata/', exist_ok=True)
 
         if self.language_code == 'en':
-            if len(os.listdir('deployed_models/model_data/transformers_cache')) != 15:
+            if len(os.listdir(self.transformers_cache)) != 15:
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
                     'deployed_models/model_data/', bar=self.bar_thermometer
                 )
                 shutil.unpack_archive('deployed_models/model_data' + '/distilbert_base_uncased_huggingface_files.zip',
-                                      'deployed_models/model_data/transformers_cache/')
+                                      self.transformers_cache)
                 
             if not os.path.exists(self.model_path):
                 wget.download(
