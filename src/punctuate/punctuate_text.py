@@ -15,13 +15,15 @@ class Punctuation:
     def __init__(self, language_code):
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
+        self.transformers_cache = os.environ.get('TRANSFORMERS_CACHE')
         if self.language_code == 'en':
             #os.environ["TRANSFORMERS_CACHE"] = str('deployed_models/model_data/transformers_cache')
             self.model_path = 'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
+            print(f"Transformers Cache : {self.transformers_cache}")
             self.model = PunctuationCapitalizationModel.restore_from(self.model_path)
             self.model = self.model.to(self.device)
-            self.transformers_cache = os.environ.get('TRANSFORMERS_CACHE')
+            
         else:
             self.model_path = 'deployed_models/model_data/' + self.language_code + '.pt'
             self.albert_metadata = 'deployed_models/model_data/albert_metadata/'
@@ -35,18 +37,15 @@ class Punctuation:
         sys.stdout.flush()
 
     def download_model_data(self):
-        
-        if not os.path.exists(self.transformers_cache):
-            os.makedirs(self.transformers_cache)
-
-        if not os.path.exists('deployed_models/model_data'):
-            os.makedirs('deployed_models/model_data', exist_ok=True)
-
-        if not os.path.exists('deployed_models/model_data/albert_metadata'):
-            os.makedirs('deployed_models/model_data/albert_metadata/', exist_ok=True)
 
         if self.language_code == 'en':
-            if len(os.listdir(self.transformers_cache)) != 15:
+            
+            if not os.path.exists(self.transformers_cache):
+                print(f"Folder does not exist at {self.transformers_cache}")
+                os.makedirs(self.transformers_cache)
+                
+            if not os.path.exists(self.transformers_cache):
+                print(f'Downloading Transformers cache to {self.transformers_cache}')
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
                     'deployed_models/model_data/', bar=self.bar_thermometer
@@ -55,10 +54,17 @@ class Punctuation:
                                       self.transformers_cache)
                 
             if not os.path.exists(self.model_path):
+                print(f"Model does not exist at {self.model_path}")
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_distilbert.nemo',
                     self.model_path, bar=self.bar_thermometer)
         else:
+            
+            if not os.path.exists('deployed_models/model_data'):
+                os.makedirs('deployed_models/model_data', exist_ok=True)
+
+            if not os.path.exists('deployed_models/model_data/albert_metadata'):
+                os.makedirs('deployed_models/model_data/albert_metadata/', exist_ok=True)
             if len(os.listdir(self.albert_metadata)) != 4:
                 wget.download(
                     'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/config.json',
