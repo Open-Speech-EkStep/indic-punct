@@ -17,7 +17,7 @@ def format_numbers_with_commas(sent, lang):
         word_contains_digit = any(map(str.isdigit, word))
         currency_sign = ''
         if word_contains_digit:
-            if len(word) > 4:
+            if len(word) > 4 and ':' not in word:
                 pos_of_first_digit_in_word = list(map(str.isdigit, word)).index(True)
 
                 if pos_of_first_digit_in_word != 0:  # word can be like $90,00,936.59
