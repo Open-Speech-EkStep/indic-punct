@@ -18,7 +18,7 @@ class Punctuation:
     def __init__(self, language_code):
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             os.environ["TRANSFORMERS_CACHE"] = str(cache + 'deployed_models/model_data/transformers_cache')
             self.model_path = cache+'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
@@ -209,7 +209,7 @@ class Punctuation:
         return sentences
 
     def punctuate_text(self, text):
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             return self.punctuate_text_english(text)
         elif self.language_code in ['hi', 'gu', 'te', 'mr', 'kn', 'pa', 'ta', 'bn', 'or', 'ml', 'as']:
             return self.punctuate_text_others(text)
@@ -252,5 +252,5 @@ if __name__ == "__main__":
 
 
     '''
-    english = Punctuation('en')
+    english = Punctuation('en-bio')
     print(*english.punctuate_text(['how are you']))
