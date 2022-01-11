@@ -47,7 +47,7 @@ class Punctuation:
         if not os.path.exists(cache + 'deployed_models/model_data/albert_metadata'):
             os.makedirs(cache + 'deployed_models/model_data/albert_metadata/', exist_ok=True)
 
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             if len(os.listdir(cache + 'deployed_models/model_data/transformers_cache')) != 15:
                 wget.download(
                     f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
