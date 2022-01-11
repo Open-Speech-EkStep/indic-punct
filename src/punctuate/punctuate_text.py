@@ -16,7 +16,7 @@ class Punctuation:
         self.language_code = language_code
         self.device = "cuda" if torch.cuda.is_available() else "cpu"
         self.transformers_cache = os.environ.get('TRANSFORMERS_CACHE')
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             #os.environ["TRANSFORMERS_CACHE"] = str('deployed_models/model_data/transformers_cache')
             self.model_path = 'deployed_models/model_data/punctuation_en_distilbert.nemo'
             self.download_model_data()
@@ -38,7 +38,7 @@ class Punctuation:
 
     def download_model_data(self):
 
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             
             if not os.path.exists(self.transformers_cache):
                 print(f"Folder does not exist at {self.transformers_cache}")
@@ -213,7 +213,7 @@ class Punctuation:
         return sentences
 
     def punctuate_text(self, text):
-        if self.language_code == 'en':
+        if self.language_code in ['en', 'en_bio']:
             return self.punctuate_text_english(text)
         elif self.language_code in ['hi', 'gu', 'te', 'mr', 'kn', 'pa', 'ta', 'bn', 'or', 'ml', 'as']:
             return self.punctuate_text_others(text)
