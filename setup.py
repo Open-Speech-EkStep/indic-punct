@@ -24,11 +24,9 @@ setup(
         'pytz==2021.1',
         'six==1.15.0',
         'tqdm==4.60.0',
-        'torch==1.9.1',
         'scipy==1.5.4',
         'sentencepiece==0.1.94',
         'tokenizers==0.9.4',
-        'torchvision==0.10.1',
         'transformers==4.0.1',
         'indic-nlp-library==0.81'
     ],
