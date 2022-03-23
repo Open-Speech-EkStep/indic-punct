@@ -1,5 +1,8 @@
 # Indic Punct Library
 
+## About
+<p>Inverse text normalization (ITN) is a part of the Automatic Speech Recognition (ASR) post-processing pipeline. ITN is the task of converting the raw spoken output of the ASR model into its written form to improve text readability. We currently only handle numbers as a part of our ITN pipeline, and have developed and open-sourced WFST (weighted finite state transducer) based ITN support for 11 Indic languages -Hindi, Gujarati, Telugu, Marathi, Punjabi, Tamil, Bengali, Malayalam, Odia, Assamese, Kannada, using NVIDIA’s NEMO toolkit. </p>
+
 ## Installation Instructions 
 
 ```buildoutcfg
