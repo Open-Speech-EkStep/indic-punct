@@ -50,7 +50,7 @@ class Punctuation:
         if self.language_code in ['en', 'en_bio']:
             if len(os.listdir(cache + 'deployed_models/model_data/transformers_cache')) != 15:
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
+                    f'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/en/distilbert_base_uncased_huggingface_files.zip',
                     cache + 'deployed_models/model_data/', bar=self.bar_thermometer
                 )
                 shutil.unpack_archive(cache + 'deployed_models/model_data' + '/distilbert_base_uncased_huggingface_files.zip',
@@ -58,40 +58,40 @@ class Punctuation:
                 
             if not os.path.exists(self.model_path):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/punctuation_en_distilbert.nemo',
+                    f'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/{self.language_code}/punctuation_en_distilbert.nemo',
                     self.model_path, bar=self.bar_thermometer)
         else:
             if len(os.listdir(self.albert_metadata)) != 4:
                 wget.download(
-                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/config.json',
+                    'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/albert_metadata/config.json',
                     self.albert_metadata + 'config.json', bar=self.bar_thermometer
                 )
                 wget.download(
-                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/pytorch_model.bin',
+                    'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/albert_metadata/pytorch_model.bin',
                     self.albert_metadata + 'pytorch_model.bin', bar=self.bar_thermometer
                 )
                 wget.download(
-                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/spiece.model',
+                    'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/albert_metadata/spiece.model',
                     self.albert_metadata + 'spiece.model', bar=self.bar_thermometer
                 )
                 wget.download(
-                    'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/albert_metadata/spiece.vocab',
+                    'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/albert_metadata/spiece.vocab',
                     self.albert_metadata + 'spiece.vocab', bar=self.bar_thermometer
                 )
 
             if not os.path.exists(self.model_path):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
+                    f'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.pt',
                     self.model_path, bar=self.bar_thermometer
                 )
             if not os.path.exists(self.encoder_path):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
+                    f'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/{self.language_code}/{self.language_code}.json',
                     self.encoder_path, bar=self.bar_thermometer
                 )
             if not os.path.exists(self.dict_map):
                 wget.download(
-                    f'https://storage.googleapis.com/vakyaansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
+                    f'https://storage.googleapis.com/vakyansh-open-models/punctuation_models/{self.language_code}/{self.language_code}_dict.json',
                     self.dict_map, bar=self.bar_thermometer
                 )
 
